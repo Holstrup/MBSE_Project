@@ -20,7 +20,7 @@ except ImportError:
 sumoBinary = "/usr/local/Cellar/sumo/1.3.1/bin/sumo-gui"
 
 #Insert dir of config file
-sumoCmd = [sumoBinary, "-c", "hello.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "simple_config/hello.sumocfg"]
 
 import traci
 import traci.constants as tc
