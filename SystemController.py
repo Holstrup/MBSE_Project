@@ -3,17 +3,21 @@ import traci
 import traci.constants as tc
 
 class SystemController:
-    def __init__(self, simulation):
+    def __init__(self, simulation, step_length):
 
         """ Hyper Parameters """
         self.time_through_intersection = 20  # 20 steps = 2 seconds at step size 0.1
         self.deceleration_parameter = 1  # 1 m/s
+        self.step_length = step_length
+        self.update_freq = 1 * (1 / step_length) # Every second
+
 
 
         """ System Variables """
         self.simulation = simulation
         self.vehicle_stack = []
         self.inc_lanes = ["-gneE3_0", "gneE4_0", "gneE2_0", "-gneE5_0"] # Find way to make this logic dynamic
+        self.out_lanes = ["gneE3_0", "-gneE4_0", "-gneE2_0", "gneE5_0"]  # Find way to make this logic dynamic
         self.reserved_slots = []
         self.vehicle_reservations = {}
 
@@ -64,13 +68,13 @@ class SystemController:
 
         if car not in self.vehicle_reservations:
             if len((set(reserved_times).intersection(set(self.reserved_slots)))) == 0:
-                if car == "f02.0": print("Car managed to find correct speed")
                 self.vehicle_reservations[car] = reserved_times
                 self.reserved_slots.extend(reserved_times)
                 traci.vehicle.setSpeed(car, traci.vehicle.getSpeed(car))
             else:
                 # Find next available time for vehicle
                 target_time = max(self.reserved_slots) + 10
+
                 print("----")
                 print("Trouble is brewing for " + car, target_time)
 
@@ -85,9 +89,8 @@ class SystemController:
         print(self.reserved_slots)
 
 
-
-
     def update_state(self, step):
+        print(self.vehicle_reservations)
         if len(self.vehicle_stack) == 0:
             pass
 
@@ -97,6 +100,10 @@ class SystemController:
             if traci.vehicle.getLaneID(car) in self.inc_lanes:
                 time = self.time_from_junction(car)
                 self.schedule_arrival(car, step, step + time * 10, step + time * 10 + self.time_through_intersection)
+            elif traci.vehicle.getLaneID(car) in self.out_lanes:
+                laneId = traci.vehicle.getLaneID(car)
+                traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
+                print("setting speed of " + car + " to " + str(traci.lane.getMaxSpeed(laneId)))
 
 
 

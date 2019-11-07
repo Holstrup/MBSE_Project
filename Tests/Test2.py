@@ -21,7 +21,7 @@ sumoBinary = "/usr/local/Cellar/sumo/1.3.1/bin/" + run_config
 
 #Insert dir of config file
 step_length = 0.1
-sumoCmd = [sumoBinary, "-c", "networks/test.sumocfg", '--step-length', str(step_length), '--full-output', "log-file.xml", "--verbose"]
+sumoCmd = [sumoBinary, "-c", "TestNetworks/test.sumocfg", '--step-length', str(step_length)]
 
 
 """ Main code """
@@ -32,18 +32,25 @@ from SystemController import SystemController
 
 traci.start(sumoCmd)
 controller = SystemController(traci.simulation, step_length)
+vehicle_stack = []
 
-
+inc_lanes = ["-gneE3_0", "gneE4_0", "gneE2_0", "-gneE5_0"]
+out_lanes = ["gneE3_0", "-gneE4_0", "-gneE2_0", "gneE5_0"]
+speed = [0, 5, 10]
 
 for step in range(10000):
     traci.simulationStep()
 
-    if len(traci.simulation.getArrivedIDList()) > 0 or len(traci.simulation.getDepartedIDList()) > 0:
-        controller.update_id_list()
+    for car in traci.simulation.getDepartedIDList():
+        vehicle_stack.append(car)
+        traci.vehicle.setSpeedMode(car, 00)
+    for car in traci.simulation.getArrivedIDList():
+        vehicle_stack.remove(car)
 
-    if step != 0 and step % controller.update_freq == 0:
-        print("step", step)
-        controller.update_state(step)
+    if step != 0 and step % 10 == 0:
+        for car in vehicle_stack:
+            traci.vehicle.setSpeed(car, speed[(step // 10) % 3])
+
 
 
 

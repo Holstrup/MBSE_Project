@@ -16,11 +16,12 @@ def read_from_file(filename):
                 for instance in element:
                     id = instance.attrib["id"]
                     if id not in vehicles:
-                        vehicles[id] = {"speed": [], "x": [], "y":[]}
+                        vehicles[id] = {"speed": [], "x": [], "y":[], "fuel": []}
 
                     vehicles[id]["speed"].append(instance.attrib["speed"])
                     vehicles[id]["x"].append(instance.attrib["x"])
                     vehicles[id]["y"].append(instance.attrib["y"])
+                    vehicles[id]["fuel"].append(instance.attrib["fuel"])
             elif element.tag == "edges":
                 for instance in element:
                     for lane in instance:
@@ -32,8 +33,7 @@ def read_from_file(filename):
                         edges_data[id]["meanspeed"].append(meanspeed)
 
 
-    return vehicles, edges_data
-
+    return vehicles, edges_data, timestep
 
 
 
@@ -92,24 +92,30 @@ def plot_lane_speed(x, y, z):
 
 
 edges = read_net_file("test01.net.xml")
-vehicledata, edge_data = read_from_file("full_log")
+vehicledata, edge_data, max_timestep = read_from_file("full_log")
 
 def plot_edge(edges, edge_data, timestep=0):
     for edge_id in edges.keys():
         x, y = edges[edge_id]["x"], edges[edge_id]["y"]
-        print(edges[edge_id]["speed"], edge_data[edge_id]["meanspeed"][80])
-        print(float(edge_data[edge_id]["meanspeed"][80]) / float(edges[edge_id]["speed"]))
         plt.plot(x, y, 'r-')
-    #plt.show()
-
-plot_edge(edges, edge_data)
+    plt.show()
 
 
+# Safety Metric: (Cars involved in collisions) / (Total number of cars)
+def safety(collisions, total_cars):
+    return collisions / total_cars
 
 
-x = vehicledata["f06.1"]["x"]
-y = vehicledata["f06.1"]["y"]
-z = vehicledata["f06.1"]["speed"]
-plot_lane_speed(x, y, z)
+# Efficiency Metric: (Cars Through Intersection) / (Minute)
+def efficiency(vehicle_data, max_time, timestep):
+    return len(vehicle_data.keys()) / (float(max_time) * timestep) * 60
 
 
+# Greta Thunberg Metric: (Sum of car pollution) / (Number of cars)
+def pollution(vehicle_data):
+    total_fuel = 0
+    for vehicle in vehicle_data.keys():
+        fueldata = vehicle_data[vehicle]["fuel"]
+        results = map(float, fueldata)
+        total_fuel += sum(results)
+    return total_fuel / len(vehicle_data.keys())
