@@ -4,7 +4,7 @@ import sys
 
 """ Configuration code """
 step_length = 0.1
-run_config = "sumo" # "sumo" or "sumo-gui"
+run_config = "sumo-gui" # "sumo" or "sumo-gui"
 
 
 

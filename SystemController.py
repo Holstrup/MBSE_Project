@@ -12,7 +12,6 @@ class SystemController:
         self.update_freq = 1 * (1 / step_length) # Every second
 
 
-
         """ System Variables """
         self.simulation = simulation
         self.vehicle_stack = []
@@ -38,6 +37,7 @@ class SystemController:
         vehicle_pos = traci.vehicle.getPosition(car)
         return math.sqrt((vehicle_pos[0] - junction_pos[0]) ** 2 + (vehicle_pos[1] - junction_pos[1]) ** 2)
 
+
     def update_id_list(self):
         """
         Updates the vehicle stack. Incoming vehicles are also assigned speed mode 0
@@ -50,10 +50,10 @@ class SystemController:
             except KeyError:
                 print("-- Move along --")
 
-
         for departed in traci.simulation.getDepartedIDList():
             self.vehicle_stack.append(departed)
-            traci.vehicle.setSpeedMode(departed, 00)
+            traci.vehicle.setSpeedMode(departed, 0)
+
 
     def schedule_arrival(self, car, step, time_in, time_out):
         """
@@ -68,6 +68,8 @@ class SystemController:
 
         if car not in self.vehicle_reservations:
             if len((set(reserved_times).intersection(set(self.reserved_slots)))) == 0:
+
+                # Reserve time for car
                 self.vehicle_reservations[car] = reserved_times
                 self.reserved_slots.extend(reserved_times)
                 traci.vehicle.setSpeed(car, traci.vehicle.getSpeed(car))
@@ -75,17 +77,17 @@ class SystemController:
                 # Find next available time for vehicle
                 target_time = max(self.reserved_slots) + 10
 
-                print("----")
-                print("Trouble is brewing for " + car, target_time)
-
                 # Calculate average speed for it to get there on that specific time
                 target_speed = self.dist_from_junction(car) / (target_time - step) * 10
 
                 # Set new speed - something
                 traci.vehicle.setSpeed(car, target_speed - self.deceleration_parameter)
 
-                # Set new time slot
-                print("----")
+                # Reserve time for car
+                reserved_times = list(range(target_time, target_time + 20, 10))
+                self.vehicle_reservations[car] = reserved_times
+                self.reserved_slots.extend(reserved_times)
+
         print(self.reserved_slots)
 
 
@@ -100,10 +102,11 @@ class SystemController:
             if traci.vehicle.getLaneID(car) in self.inc_lanes:
                 time = self.time_from_junction(car)
                 self.schedule_arrival(car, step, step + time * 10, step + time * 10 + self.time_through_intersection)
+            # If the car is on its way out of the intersection, set max speed.
             elif traci.vehicle.getLaneID(car) in self.out_lanes:
                 laneId = traci.vehicle.getLaneID(car)
                 traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
-                print("setting speed of " + car + " to " + str(traci.lane.getMaxSpeed(laneId)))
+
 
 
 
