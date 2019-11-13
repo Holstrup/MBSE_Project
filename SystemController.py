@@ -3,12 +3,13 @@ import traci
 import traci.constants as tc
 
 class SystemController:
-    def __init__(self, simulation, step_length):
+    def __init__(self, simulation, step_length, speedMode = 0):
 
         """ Hyper Parameters """
         self.time_through_intersection = 20  # 20 steps = 2 seconds at step size 0.1
         self.deceleration_parameter = 1  # 1 m/s
         self.step_length = step_length
+        self.speedMode = speedMode
         self.update_freq = 1 * (1 / step_length) # Every second
 
 
@@ -30,7 +31,10 @@ class SystemController:
         """
         dist = self.dist_from_junction(car)
         speed = traci.vehicle.getSpeed(car)
-        return dist / (speed + 0.0001)
+        if speed == 0:
+            return dist / (speed + 0.0001)
+        else:
+            return dist / speed
 
 
     def dist_from_junction(self, car, junction_pos=(0, 0)):
@@ -52,7 +56,7 @@ class SystemController:
 
         for departed in traci.simulation.getDepartedIDList():
             self.vehicle_stack.append(departed)
-            traci.vehicle.setSpeedMode(departed, 0)
+            traci.vehicle.setSpeedMode(departed, self.speedMode)
 
 
     def schedule_arrival(self, car, step, time_in, time_out):

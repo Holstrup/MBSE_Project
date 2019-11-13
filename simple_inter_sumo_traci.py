@@ -31,7 +31,7 @@ import traci.constants as tc
 from SystemController import SystemController
 
 traci.start(sumoCmd)
-controller = SystemController(traci.simulation, step_length)
+controller = SystemController(traci.simulation, step_length, speedMode=7)
 
 
 
