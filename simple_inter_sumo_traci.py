@@ -29,9 +29,12 @@ import math
 import traci
 import traci.constants as tc
 from SystemController import SystemController
+from SystemControllerFuture import SystemController as FutureIsHere
 
 traci.start(sumoCmd)
-controller = SystemController(traci.simulation, step_length, speedMode=7)
+controller = SystemController(step_length, speedMode=7)
+#controller = FutureIsHere(step_length, speedMode=7)
+
 
 
 

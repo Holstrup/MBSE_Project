@@ -1,6 +1,8 @@
 import math
 import traci
 import traci.constants as tc
+import numpy as np
+from LaneDefinitions import paths
 
 class SystemController:
     def __init__(self, step_length, speedMode = 0):
@@ -11,6 +13,8 @@ class SystemController:
         self.step_length = step_length
         self.speedMode = speedMode
         self.update_freq = 1 * (1 / step_length) # Every second
+        self.time_history = 60 # Seconds
+        self.junction_size = 2
 
 
         """ System Variables """
@@ -19,6 +23,10 @@ class SystemController:
         self.out_lanes = ["gneE3_0", "-gneE4_0", "-gneE2_0", "gneE5_0"]  # Find way to make this logic dynamic
         self.reserved_slots = []
         self.vehicle_reservations = {}
+
+        # X,Y,T
+        self.space_time = np.zeros((self.junction_size, self.junction_size, self.time_history)).astype(bool)
+
 
 
 
@@ -58,63 +66,67 @@ class SystemController:
             traci.vehicle.setSpeedMode(departed, self.speedMode)
 
 
-    def schedule_arrival(self, car, step, time_in, time_out):
+    def schedule_arrival(self, car, time):
         """
         :param car: vehicle id
-        :param time_in: ETA car in intersection
-        :param time_out: ETA car out of intersection
+        :param time: ETA car in intersection
         """
 
-        time_in = int(round(time_in,-1))
-        time_out = int(round(time_out, -1))
-        reserved_times = list(range(time_in, time_out + 1, 10))
+        path = paths[traci.vehicle.getRouteID(car)[1:]]
 
-        if car not in self.vehicle_reservations:
-            if len((set(reserved_times).intersection(set(self.reserved_slots)))) == 0:
+        if not self.compatible_path(path, time):
+            print("Not Compatible")
+            # Slow down
 
-                # Reserve time for car
-                self.vehicle_reservations[car] = reserved_times
-                self.reserved_slots.extend(reserved_times)
-                traci.vehicle.setSpeed(car, traci.vehicle.getSpeed(car))
-            else:
-                # Find next available time for vehicle
-                target_time = max(self.reserved_slots) + 10
+        # Book time
+        through_time = self.time_through_intersection // 10
+        for i in range(through_time):
+            self.space_time[:, :, int(time + i)] = path
+        self.vehicle_reservations[car] = (time, time + through_time)
 
-                # Calculate average speed for it to get there on that specific time
-                target_speed = self.dist_from_junction(car) / (target_time - step) * 10
+    def compatible_path(self, path_mask, time_from_now):
+        through_time = self.time_through_intersection // 10
+        path_mask_sum = np.sum(path_mask)
+        for i in range(through_time):
+            space_time_sum = int(np.sum(self.space_time[:, :, int(time_from_now + i)]))
+            full_sum = int(np.sum(np.add(path_mask, self.space_time[:, :, int(time_from_now + i)])))
+            if path_mask_sum + space_time_sum != full_sum:
+                return False
+        return True
 
-                # Set new speed - something
-                traci.vehicle.setSpeed(car, target_speed - self.deceleration_parameter)
 
-                # Reserve time for car
-                reserved_times = list(range(target_time, target_time + self.time_through_intersection, 10))
-                self.vehicle_reservations[car] = reserved_times
-                self.reserved_slots.extend(reserved_times)
-
-        print(self.reserved_slots)
+    def update_space_time(self):
+        """
+        Refreshes the space time array for a new timestep.
+        Index 0 in the time direction is removed, and a new empty array is added
+        at index self.time_history.
+        """
+        self.space_time = np.delete(self.space_time, obj=0, axis=2)
+        self.space_time = np.dstack((self.space_time, np.ones((self.junction_size, self.junction_size))))
 
 
     def update_state(self, step):
-        print(self.vehicle_reservations)
         if len(self.vehicle_stack) == 0:
             pass
 
-        # For all cars
+        self.update_space_time()
+
         for car in self.vehicle_stack:
             # If the car is on it's way into the intersection
             if traci.vehicle.getLaneID(car) in self.inc_lanes:
                 time = self.time_from_junction(car)
-                self.schedule_arrival(car, step, step + time * 10, step + time * 10 + self.time_through_intersection)
+                if time > 55:
+                    print("time from", time, car)
+                else:
+                    self.schedule_arrival(car, round(time, -1))
+
             # If the car is on its way out of the intersection, set max speed.
             elif traci.vehicle.getLaneID(car) in self.out_lanes:
                 laneId = traci.vehicle.getLaneID(car)
                 traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
-            # If the car is in the intrersection, set the speed to max speed
+
+            # If the car is in the intersection, set the speed to max speed
             else:
                 laneId = traci.vehicle.getLaneID(car)
                 traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
-
-
-
-
 

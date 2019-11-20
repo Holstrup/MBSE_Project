@@ -92,7 +92,19 @@ def plot_lane_speed(x, y, z):
 
 
 edges = read_net_file("test01.net.xml")
-vehicledata, edge_data, max_timestep = read_from_file("full_log")
+vehicledata, edge_data, max_timestep = read_from_file("../log-file.xml")
+
+def average_speed():
+    speeds = []
+    for vehicle in vehicledata.keys():
+        print(vehicle)
+        v_speed = vehicledata[vehicle]["speed"]
+        v_speed = list(map(float, v_speed))
+        speeds.append(sum(v_speed) / len(v_speed))
+    print("No vehicles", len(speeds))
+    return sum(speeds) / len(speeds)
+w
+print(average_speed())
 
 def plot_edge(edges, edge_data, timestep=0):
     for edge_id in edges.keys():
