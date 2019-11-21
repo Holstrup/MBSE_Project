@@ -246,3 +246,55 @@ class ControlLogic2:
                     qued_cars.append(self.watch_dict[each_inc_road][1])
         return qued_cars
 
+
+    def run_sim(self):
+        # update lists
+        self.update_vehicle_list()
+
+        for road_id in self.get_watch_list():
+
+            vehicle_que = self.watch_dict[road_id]
+
+            if len(vehicle_que) >= 1:
+                for vehicle in vehicle_que:
+
+                    self.counter_dict[vehicle] += 1
+                    other_vehicles = self.get_first_cars_in_que(road_id)
+                    can_go = True
+
+                    if len(other_vehicles) >= 1:
+                        for other in other_vehicles:
+                            if self.will_collide(vehicle, other):
+                                if not self.is_prioritized(vehicle, other):
+                                    can_go = False
+
+
+                            # both cars are stopped
+                            elif self.traci.vehicle.getStopState(vehicle) == 1 and self.traci.vehicle.getStopState(other) == 1:
+
+                                if self.counter_dict[vehicle] < self.counter_dict[other]:
+                                    can_go = False
+
+                        if not can_go and self.vehicle_dict[vehicle] == True and self.can_stop(vehicle):
+
+                            self.stop_at_junction(vehicle)
+                        # If car is stopping but can go
+                        elif self.vehicle_dict[vehicle] == False and can_go and self.traci.vehicle.getStopState(
+                                vehicle) == 0:
+
+                            self.cancel_stop(vehicle)
+
+                            # control.remove_from_watch(road_id,vehicle)
+                        elif self.traci.vehicle.getStopState(vehicle) == 1 and can_go:
+
+                            self.traci.vehicle.resume(vehicle)
+                            self.vehicle_dict[vehicle] = False
+                    else:
+                        if self.traci.vehicle.getStopState(vehicle) == 0 and self.vehicle_dict[vehicle] == False:
+                            self.cancel_stop(vehicle)
+
+                        elif self.traci.vehicle.getStopState(vehicle) == 1:
+
+                            self.traci.vehicle.resume(vehicle)
+                            self.vehicle_dict[vehicle] = True
+                            self.counter_dict[vehicle] = 0
