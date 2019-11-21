@@ -32,13 +32,13 @@ from SystemController import SystemController
 from SystemControllerFuture import SystemController as FutureIsHere
 
 traci.start(sumoCmd)
-#controller = SystemController(step_length, speedMode=7)
-controller = FutureIsHere(step_length, speedMode=0)
+controller = SystemController(step_length, speedMode=7)
+#controller = FutureIsHere(step_length, speedMode=0)
 
 
 
 
-for step in range(10000):
+for step in range(3000):
     traci.simulationStep()
 
     if len(traci.simulation.getArrivedIDList()) > 0 or len(traci.simulation.getDepartedIDList()) > 0:

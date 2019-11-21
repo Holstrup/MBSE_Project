@@ -1,16 +1,16 @@
 <routes>
 	 <vehicles>
-		<flow id="down_up" begin="0" end="10000" from="gneE2" to="gneE3" probability="0.10" departSpeed="13.89"/>
-		<flow id="down_left" begin="0" end="10000" from="gneE2" to="gneE5" probability="0.10" departSpeed="13.89"/>
-		<flow id="down_right" begin="0" end="10000" from="gneE2" to="-gneE4" probability="0.10" departSpeed="13.89"/>
-		<flow id="left_down" begin="0" end="10000" from="-gneE5" to="-gneE2" probability="0.10" departSpeed="13.89"/>
-		 <flow id="left_right" begin="0" end="10000" from="-gneE5" to="-gneE4" probability="0.10" departSpeed="13.89"/>
-		 <flow id="left_up" begin="0" end="10000" from="-gneE5" to="gneE3" probability="0.10" departSpeed="13.89"/>
-		<flow id="up_down" begin="0" end="10000" from="-gneE3" to="-gneE2" probability="0.10" departSpeed="13.89"/>
-		 <flow id="up_left" begin="0" end="10000" from="-gneE3" to="gneE5" probability="0.10" departSpeed="13.89"/>
-		 <flow id="up_right" begin="0" end="10000" from="-gneE3" to="-gneE4" probability="0.10" departSpeed="13.89"/>
-		<flow id="right_down" begin="0" end="10000" from="gneE4" to="-gneE2" probability="0.10" departSpeed="13.89"/>
-		 <flow id="right_left" begin="0" end="10000" from="gneE4" to="gneE5" probability="0.10" departSpeed="13.89"/>
-		 <flow id="right_up" begin="0" end="10000" from="gneE4" to="gneE3" probability="0.10" departSpeed="13.89"/>
+		<flow id="down_up" begin="0" end="10000" from="gneE2" to="gneE3" probability="0.08" departSpeed="13.89"/>
+		<flow id="down_left" begin="0" end="10000" from="gneE2" to="gneE5" probability="0.08" departSpeed="13.89"/>
+		<flow id="down_right" begin="0" end="10000" from="gneE2" to="-gneE4" probability="0.08" departSpeed="13.89"/>
+		<flow id="left_down" begin="0" end="10000" from="-gneE5" to="-gneE2" probability="0.08" departSpeed="13.89"/>
+		 <flow id="left_right" begin="0" end="10000" from="-gneE5" to="-gneE4" probability="0.08" departSpeed="13.89"/>
+		 <flow id="left_up" begin="0" end="10000" from="-gneE5" to="gneE3" probability="0.08" departSpeed="13.89"/>
+		<flow id="up_down" begin="0" end="10000" from="-gneE3" to="-gneE2" probability="0.08" departSpeed="13.89"/>
+		 <flow id="up_left" begin="0" end="10000" from="-gneE3" to="gneE5" probability="0.08" departSpeed="13.89"/>
+		 <flow id="up_right" begin="0" end="10000" from="-gneE3" to="-gneE4" probability="0.08" departSpeed="13.89"/>
+		<flow id="right_down" begin="0" end="10000" from="gneE4" to="-gneE2" probability="0.08" departSpeed="13.89"/>
+		 <flow id="right_left" begin="0" end="10000" from="gneE4" to="gneE5" probability="0.08" departSpeed="13.89"/>
+		 <flow id="right_up" begin="0" end="10000" from="gneE4" to="gneE3" probability="0.08" departSpeed="13.89"/>
 	 </vehicles>
 </routes>
