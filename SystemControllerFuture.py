@@ -55,15 +55,20 @@ class SystemController:
         Updates the vehicle stack. Incoming vehicles are also assigned speed mode 0
         """
         for arrived in traci.simulation.getArrivedIDList():
+            print("arrived " + arrived)
             self.vehicle_stack.remove(arrived)
+
             try:
                 self.reserved_slots = [x for x in self.reserved_slots if x not in self.vehicle_reservations[arrived]]
                 del self.vehicle_reservations[arrived]
             except KeyError:
                 print("-- Move along --")
 
+
+
         for departed in traci.simulation.getDepartedIDList():
             self.vehicle_stack.append(departed)
+
             traci.vehicle.setSpeedMode(departed, self.speedMode)
 
 
@@ -151,8 +156,14 @@ class SystemController:
                 traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
 
             # If the car is in the intersection, set the speed to max speed
+
             else:
                 laneId = traci.vehicle.getLaneID(car)
-                traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
+                #if car is not getting teleported
+                if laneId!="":
+                    traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId[0:]))
+
+
+
 
 

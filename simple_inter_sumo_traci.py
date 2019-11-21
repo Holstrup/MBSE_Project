@@ -41,12 +41,14 @@ controller = FutureIsHere(step_length, speedMode=0)
 for step in range(10000):
     traci.simulationStep()
 
-    if len(traci.simulation.getArrivedIDList()) > 0 or len(traci.simulation.getDepartedIDList()) > 0:
+    if len(traci.simulation.getArrivedIDList()) > 0 or len(traci.simulation.getDepartedIDList()) > 0 or len(traci.simulation.getEndingTeleportIDList())>0:
+
         controller.update_id_list()
 
     if step != 0 and step % controller.update_freq == 0:
         print("step", step)
         controller.update_state(step)
+
 
 
 
