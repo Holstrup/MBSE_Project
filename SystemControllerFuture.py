@@ -10,7 +10,7 @@ class SystemController:
 
         """ Hyper Parameters """
         self.time_through_intersection = 40  # 20 steps = 2 seconds at step size 0.1
-        self.time_through_intersection_dict={"up":20, "down":20, "left":40, "right":30}
+        self.time_through_intersection_dict={"s":20, "l":40, "r":30}
         self.deceleration_parameter = 1  # 1 m/s
         self.step_length = step_length
         self.speedMode = speedMode
@@ -23,11 +23,14 @@ class SystemController:
         self.vehicle_stack = []
         self.inc_lanes = ["-gneE3_0", "gneE4_0", "gneE2_0", "-gneE5_0"] # Find way to make this logic dynamic
         self.out_lanes = ["gneE3_0", "-gneE4_0", "-gneE2_0", "gneE5_0"]  # Find way to make this logic dynamic
+        self.right_turns={'gneE2':'-gneE4','-gneE5': '-gneE2','gneE4':'gneE3','-gneE3':'gneE5'}
+        self.straight_path = {'gneE2': 'gneE3', '-gneE3': '-gneE2', 'gneE4': 'gneE5', '-gneE5': '-gneE4'}
         self.reserved_slots = []
         self.vehicle_reservations = {}
 
         # X,Y,T
         self.space_time = np.zeros((self.junction_size, self.junction_size, self.time_history)).astype(bool)
+
 
 
 
@@ -56,7 +59,7 @@ class SystemController:
         Updates the vehicle stack. Incoming vehicles are also assigned speed mode 0
         """
         for arrived in traci.simulation.getArrivedIDList():
-            print("arrived " + arrived)
+
             self.vehicle_stack.remove(arrived)
 
             try:
@@ -94,7 +97,7 @@ class SystemController:
         :param time: ETA car in intersection
         """
 
-        path = paths[traci.vehicle.getRouteID(car)[1:]]
+        path = paths[traci.vehicle.getRouteID(car)]
 
         if not self.compatible_path(path, time):
             # Path not compatible at time -> Find next compatible time
@@ -120,8 +123,14 @@ class SystemController:
 
 
     def get_time_through_intersection(self,vehicle):
-        first_id=vehicle.split(".")[0]
-        dest_id=first_id.split("_")[1]
+        in_pos = traci.vehicle.getRoute(vehicle)[0]
+        out_pos = traci.vehicle.getRoute(vehicle)[1]
+        if self.right_turns[in_pos]==out_pos:
+            dest_id="r"
+        elif self.straight_path[in_pos]==out_pos:
+            dest_id="s"
+        else:
+            dest_id="l"
         return self.time_through_intersection_dict[dest_id]
 
 

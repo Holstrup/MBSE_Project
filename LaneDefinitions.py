@@ -31,9 +31,9 @@ up_right = np.array([[1, 0],
                      [1, 1]]).astype(bool)
 
 
-paths = {"down_up": down_up, "up_down": up_down,
-         "left_right": left_right, "right_left": right_left,
-         "down_right": down_right, "down_left": down_left,
-         "right_up": right_up, "right_down": right_down,
-         "left_down": left_down, "left_up": left_up,
-         "up_left": up_left, "up_right": up_right}
+paths = {"du": down_up, "ud": up_down,
+         "lr": left_right, "rl": right_left,
+         "dr": down_right, "dl": down_left,
+         "ru": right_up, "rd": right_down,
+         "ld": left_down, "lu": left_up,
+         "ul": up_left, "ur": up_right}

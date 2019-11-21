@@ -33,13 +33,13 @@ from SystemControllerFuture import SystemController as FutureIsHere
 import random
 
 traci.start(sumoCmd)
-controller = SystemController(step_length, speedMode=7)
-#controller = FutureIsHere(step_length, speedMode=0)
+#controller = SystemController(step_length, speedMode=7)
+controller = FutureIsHere(step_length, speedMode=7)
 
 LOW = 0.026
 HIGH = 0.042
 
-vehicle_appearance_probability = HIGH
+vehicle_appearance_probability = LOW
 sm = 7
 current_id = 1
 routes = ['du', 'dl', 'dr', 'ld', 'lr', 'lu', 'ul', 'ud', 'ur', 'ru', 'rl', 'rd']
