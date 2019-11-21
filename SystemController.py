@@ -91,11 +91,11 @@ class SystemController:
                 self.vehicle_reservations[car] = reserved_times
                 self.reserved_slots.extend(reserved_times)
 
-        print(self.reserved_slots)
+        #print(self.reserved_slots)
 
 
     def update_state(self, step):
-        print(self.vehicle_reservations)
+        #print(self.vehicle_reservations)
         if len(self.vehicle_stack) == 0:
             pass
 

@@ -3,17 +3,18 @@ import traci
 import traci.constants as tc
 import numpy as np
 from LaneDefinitions import paths
+import math
 
 class SystemController:
     def __init__(self, step_length, speedMode = 0):
 
         """ Hyper Parameters """
-        self.time_through_intersection = 20  # 20 steps = 2 seconds at step size 0.1
+        self.time_through_intersection = 30  # 20 steps = 2 seconds at step size 0.1
         self.deceleration_parameter = 1  # 1 m/s
         self.step_length = step_length
         self.speedMode = speedMode
         self.update_freq = 1 * (1 / step_length) # Every second
-        self.time_history = 60 # Seconds
+        self.time_history = 1200 # Seconds
         self.junction_size = 2
 
 
@@ -46,7 +47,7 @@ class SystemController:
 
     def dist_from_junction(self, car, junction_pos=(0, 0)):
         vehicle_pos = traci.vehicle.getPosition(car)
-        return math.sqrt((vehicle_pos[0] - junction_pos[0]) ** 2 + (vehicle_pos[1] - junction_pos[1]) ** 2)
+        return math.sqrt((vehicle_pos[0] - junction_pos[0]) ** 2 + (vehicle_pos[1] - junction_pos[1]) ** 2) - 7
 
 
     def update_id_list(self):
@@ -66,7 +67,22 @@ class SystemController:
             traci.vehicle.setSpeedMode(departed, self.speedMode)
 
 
-    def schedule_arrival(self, car, time):
+    def next_available_time(self, car, time, path_mask, step):
+
+        for i in range(int(time), int(time + 50), 1):
+            if self.compatible_path(path_mask, i):
+                target_time = i
+                break
+
+        try:
+            new_speed = (self.dist_from_junction(car) / target_time) - self.deceleration_parameter
+            new_speed = math.ceil(new_speed)
+        except UnboundLocalError:
+            print("ERROR WITH " + car)
+
+        return new_speed, target_time
+
+    def schedule_arrival(self, car, time, step):
         """
         :param car: vehicle id
         :param time: ETA car in intersection
@@ -75,22 +91,29 @@ class SystemController:
         path = paths[traci.vehicle.getRouteID(car)[1:]]
 
         if not self.compatible_path(path, time):
-            print("Not Compatible")
-            # Slow down
+            # Path not compatible at time -> Find next compatible time
+            print("Old speed ", traci.vehicle.getSpeed(car))
+            new_speed, time = self.next_available_time(car, time, path, step)
+            print("New speed ", new_speed)
+            print("Distance  ", self.dist_from_junction(car))
+            print("Time      ", self.dist_from_junction(car) / new_speed)
+            # Set new speed
+            traci.vehicle.setSpeed(car, new_speed)
+
 
         # Book time
-        through_time = self.time_through_intersection // 10
+        through_time = self.time_through_intersection // 10 + 1
         for i in range(through_time):
-            self.space_time[:, :, int(time + i)] = path
-        self.vehicle_reservations[car] = (time, time + through_time)
+            self.space_time[:, :, int(time + i)] = np.add(self.space_time[:, :, int(time + i)], path)
+
+        self.vehicle_reservations[car] = (time, step + int(time) * 10)
+
 
     def compatible_path(self, path_mask, time_from_now):
         through_time = self.time_through_intersection // 10
-        path_mask_sum = np.sum(path_mask)
         for i in range(through_time):
-            space_time_sum = int(np.sum(self.space_time[:, :, int(time_from_now + i)]))
-            full_sum = int(np.sum(np.add(path_mask, self.space_time[:, :, int(time_from_now + i)])))
-            if path_mask_sum + space_time_sum != full_sum:
+            full_sum = np.add(path_mask, self.space_time[:, :, int(time_from_now + i)])
+            if np.any((full_sum > 1)):
                 return False
         return True
 
@@ -104,12 +127,13 @@ class SystemController:
         self.space_time = np.delete(self.space_time, obj=0, axis=2)
         self.space_time = np.dstack((self.space_time, np.ones((self.junction_size, self.junction_size))))
 
-
     def update_state(self, step):
         if len(self.vehicle_stack) == 0:
             pass
 
         self.update_space_time()
+        print(self.space_time[:, :, 0])
+        print(self.vehicle_reservations)
 
         for car in self.vehicle_stack:
             # If the car is on it's way into the intersection
@@ -118,7 +142,8 @@ class SystemController:
                 if time > 55:
                     print("time from", time, car)
                 else:
-                    self.schedule_arrival(car, round(time, -1))
+                    if car not in self.vehicle_reservations.keys():
+                        self.schedule_arrival(car, round(time, 2), step)
 
             # If the car is on its way out of the intersection, set max speed.
             elif traci.vehicle.getLaneID(car) in self.out_lanes:
@@ -129,4 +154,5 @@ class SystemController:
             else:
                 laneId = traci.vehicle.getLaneID(car)
                 traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
+
 

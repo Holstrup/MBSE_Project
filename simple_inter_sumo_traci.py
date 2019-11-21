@@ -32,8 +32,8 @@ from SystemController import SystemController
 from SystemControllerFuture import SystemController as FutureIsHere
 
 traci.start(sumoCmd)
-controller = SystemController(step_length, speedMode=7)
-#controller = FutureIsHere(step_length, speedMode=7)
+#controller = SystemController(step_length, speedMode=7)
+controller = FutureIsHere(step_length, speedMode=0)
 
 
 
