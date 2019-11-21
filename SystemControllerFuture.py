@@ -9,7 +9,8 @@ class SystemController:
     def __init__(self, step_length, speedMode = 0):
 
         """ Hyper Parameters """
-        self.time_through_intersection = 30  # 20 steps = 2 seconds at step size 0.1
+        self.time_through_intersection = 40  # 20 steps = 2 seconds at step size 0.1
+        self.time_through_intersection_dict={"up":20, "down":20, "left":40, "right":30}
         self.deceleration_parameter = 1  # 1 m/s
         self.step_length = step_length
         self.speedMode = speedMode
@@ -107,11 +108,21 @@ class SystemController:
 
 
         # Book time
-        through_time = self.time_through_intersection // 10 + 1
+
+        #through_time = self.time_through_intersection // 10 + 1
+
+        through_time=self.get_time_through_intersection(car) // 10 + 1
+
         for i in range(through_time):
             self.space_time[:, :, int(time + i)] = np.add(self.space_time[:, :, int(time + i)], path)
 
         self.vehicle_reservations[car] = (time, step + int(time) * 10)
+
+
+    def get_time_through_intersection(self,vehicle):
+        first_id=vehicle.split(".")[0]
+        dest_id=first_id.split("_")[1]
+        return self.time_through_intersection_dict[dest_id]
 
 
     def compatible_path(self, path_mask, time_from_now):
