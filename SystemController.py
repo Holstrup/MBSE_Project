@@ -55,6 +55,7 @@ class SystemController:
 
         for departed in traci.simulation.getDepartedIDList():
             self.vehicle_stack.append(departed)
+            print("Depart Speed", traci.vehicle.getSpeed(departed))
             traci.vehicle.setSpeedMode(departed, self.speedMode)
 
 

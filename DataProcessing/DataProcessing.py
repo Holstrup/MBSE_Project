@@ -93,7 +93,6 @@ def plot_lane_speed(x, y, z):
 
 edges = read_net_file("test01.net.xml")
 vehicledata, edge_data, max_timestep = read_from_file("../log-file.xml")
-print(edge_data)
 
 def average_speed():
     speeds = []
@@ -101,10 +100,7 @@ def average_speed():
         v_speed = vehicledata[vehicle]["speed"]
         v_speed = list(map(float, v_speed))
         speeds.append(sum(v_speed) / len(v_speed))
-    print("No vehicles", len(speeds))
-    return sum(speeds) / len(speeds)
-
-print(average_speed())
+    return (sum(speeds) / len(speeds)) * 3.6
 
 def plot_edge(edges, edge_data, timestep=0):
     for edge_id in edges.keys():
@@ -123,9 +119,6 @@ def efficiency(vehicle_data, max_time):
     return len(vehicle_data.keys()) / (float(max_time)) * 60
 
 
-print(efficiency(vehicledata, 1000))
-
-
 # Greta Thunberg Metric: (Sum of car pollution) / (Number of cars)
 def pollution(vehicle_data):
     total_fuel = 0
@@ -134,3 +127,7 @@ def pollution(vehicle_data):
         results = map(float, fueldata)
         total_fuel += sum(results)
     return total_fuel / len(vehicle_data.keys())
+
+print("No. Vehicles : " + str(len(vehicledata.keys())))
+print("Average speed: " + str(average_speed()))
+print("Efficiency   : " + str(efficiency(vehicledata, 300)))

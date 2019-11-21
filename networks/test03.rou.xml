@@ -1,16 +1,15 @@
 <routes>
-	 <vehicles>
-		<flow id="down_up" begin="0" end="10000" from="gneE2" to="gneE3" probability="0.10" departSpeed="13.89"/>
-		<flow id="down_left" begin="0" end="10000" from="gneE2" to="gneE5" probability="0.10" departSpeed="13.89"/>
-		<flow id="down_right" begin="0" end="10000" from="gneE2" to="-gneE4" probability="0.10" departSpeed="13.89"/>
-		<flow id="left_down" begin="0" end="10000" from="-gneE5" to="-gneE2" probability="0.10" departSpeed="13.89"/>
-		 <flow id="left_right" begin="0" end="10000" from="-gneE5" to="-gneE4" probability="0.10" departSpeed="13.89"/>
-		 <flow id="left_up" begin="0" end="10000" from="-gneE5" to="gneE3" probability="0.10" departSpeed="13.89"/>
-		<flow id="up_down" begin="0" end="10000" from="-gneE3" to="-gneE2" probability="0.10" departSpeed="13.89"/>
-		 <flow id="up_left" begin="0" end="10000" from="-gneE3" to="gneE5" probability="0.10" departSpeed="13.89"/>
-		 <flow id="up_right" begin="0" end="10000" from="-gneE3" to="-gneE4" probability="0.10" departSpeed="13.89"/>
-		<flow id="right_down" begin="0" end="10000" from="gneE4" to="-gneE2" probability="0.10" departSpeed="13.89"/>
-		 <flow id="right_left" begin="0" end="10000" from="gneE4" to="gneE5" probability="0.10" departSpeed="13.89"/>
-		 <flow id="right_up" begin="0" end="10000" from="gneE4" to="gneE3" probability="0.10" departSpeed="13.89"/>
-	 </vehicles>
+	<vType id="Bus" accel="1.2" decel="6.0" sigma="0.5" maxSpeed="160" guiShape="bus" />
+	<route id="du" edges="gneE2 gneE3"/>
+		<route id="dl" edges="gneE2 gneE5"/>
+		<route id="dr" edges="gneE2 -gneE4"/>
+		<route id="ld" edges="-gneE5 -gneE2"/>
+		 <route id="lr" edges="-gneE5 -gneE4"/>
+		 <route id="lu" edges="-gneE5 gneE3"/>
+		<route id="ud" edges="-gneE3 -gneE2"/>
+		 <route id="ul" edges="-gneE3 gneE5"/>
+		 <route id="ur" edges="-gneE3 -gneE4"/>
+		<route id="rd" edges="gneE4 -gneE2"/>
+		 <route id="rl" edges="gneE4 gneE5"/>
+		 <route id="ru" edges="gneE4 gneE3"/>
 </routes>
