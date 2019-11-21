@@ -30,16 +30,40 @@ import traci
 import traci.constants as tc
 from SystemController import SystemController
 from SystemControllerFuture import SystemController as FutureIsHere
+import random
 
 traci.start(sumoCmd)
 controller = SystemController(step_length, speedMode=7)
 #controller = FutureIsHere(step_length, speedMode=0)
 
+LOW = 0.026
+HIGH = 0.042
 
+vehicle_appearance_probability = HIGH
+sm = 7
+current_id = 1
+routes = ['du', 'dl', 'dr', 'ld', 'lr', 'lu', 'ul', 'ud', 'ur', 'ru', 'rl', 'rd']
+
+def generate_traffic():
+    global sm, current_id, routes, vehicle_appearance_probability
+    if random.random() < vehicle_appearance_probability:
+        print(math.floor(random.random() * len(routes)))
+        route_id = routes[math.floor(random.random() * len(routes))]
+
+        vehicle_id = "00000" + str(current_id)
+        current_id += 1
+        vehicle_id = vehicle_id[-6:]
+
+        traci.vehicle.add(vehicle_id, route_id, departSpeed = 13.8)
+        traci.vehicle.setMinGap(vehicle_id, 3.0)
+        traci.vehicle.setSpeedMode(vehicle_id, sm)
+        traci.vehicle.setTau(vehicle_id, 0.0)
+        traci.vehicle.setImperfection(vehicle_id, 0.0)
 
 
 for step in range(3000):
     traci.simulationStep()
+    generate_traffic()
 
     if len(traci.simulation.getArrivedIDList()) > 0 or len(traci.simulation.getDepartedIDList()) > 0:
         controller.update_id_list()
@@ -47,9 +71,6 @@ for step in range(3000):
     if step != 0 and step % controller.update_freq == 0:
         print("step", step)
         controller.update_state(step)
-
-
-
 
 
 traci.close()
