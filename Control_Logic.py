@@ -9,6 +9,8 @@ class ControlLogic2:
         self.right_turn_dict={}
         self.inc_lanes = [ "gneE2", "gneE4","-gneE3","-gneE5"]
         self.watch_dict={"gneE2":[], "gneE4":[],"-gneE5":[],"-gneE3":[]}
+        self.right_turns = {'gneE2': '-gneE4', '-gneE5': '-gneE2', 'gneE4': 'gneE3', '-gneE3': 'gneE5'}
+        self.straight_path = {'gneE2': 'gneE3', '-gneE3': '-gneE2', 'gneE4': 'gneE5', '-gneE5': '-gneE4'}
         self.que=[]
         self.counter_dict={}
 
@@ -50,24 +52,21 @@ class ControlLogic2:
     def get_vehicles(self):
         return self.vehicle_dict.keys()
 
-    def define_right_turn(self,in_pos,out_pos):
-        self.right_turn_dict[in_pos]=out_pos
 
     #function to check if vehicle is turning right
     def turning_right(self,vehicle_id):
         in_pos=self.traci.vehicle.getRoute(vehicle_id)[0]
         out_pos = self.traci.vehicle.getRoute(vehicle_id)[1]
-        if in_pos in self.right_turn_dict:
-            if self.right_turn_dict[in_pos]==out_pos:
+        if self.right_turns[in_pos]==out_pos:
                 return True
-
+        else:
         #if either first or second if  True  then the car is not turning right
-        return False
+            return False
 
     def going_straight(self,vehicle_id):
         in_pos = self.traci.vehicle.getRoute(vehicle_id)[0]
         out_pos = self.traci.vehicle.getRoute(vehicle_id)[1]
-        if (in_pos[0] == "-" and out_pos[0] == "-") or (in_pos[0]=="g" and out_pos[0])=="g":
+        if self.straight_path[in_pos]==out_pos:
             return True
         else:
             return False

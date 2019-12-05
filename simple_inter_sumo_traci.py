@@ -30,11 +30,10 @@ print("HEJ")
 vehID="veh0"
 traci.vehicle.subscribe(vehID, (tc.VAR_ROAD_ID, tc.VAR_LANEPOSITION))
 print(traci.vehicle.getSubscriptionResults(vehID))
-for step in range(20):
+for step in range(3000):
     print("step", step)
     traci.simulationStep()
-    print(traci.vehicle.getSubscriptionResults(vehID))
-    print(traci.vehicle.getSpeed("veh0"))
+
 
     if step==6:
         traci.vehicle.setSpeed(vehID,6)
