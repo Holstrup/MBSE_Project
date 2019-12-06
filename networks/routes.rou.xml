@@ -9,7 +9,7 @@
 		<flow id="f06" begin="0" end="10000" from="gneE4" to="-gneE2" probability="0.05"/>
 	 </vehicles>
 	 -->
-	<vType accel="3.0" decel="5.0" id="Car" length="4.0" maxSpeed="100.0" sigma="0.0" />
+	<vType accel="3.0" decel="5.0" id="Car" length="4.5" maxSpeed="100.0" sigma="0.0" />
 	
 	<route id="du" edges="gneE2 gneE3"/>
 	<route id="dl" edges="gneE2 gneE5"/>
