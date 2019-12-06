@@ -1,0 +1,27 @@
+<routes>
+	 <!--
+	 <vehicles>
+		<flow id="f01" begin="0" end="10000" from="gneE2" to="gneE3" probability="0.01"/>
+		<flow id="f02" begin="0" end="10000" from="gneE2" to="gneE5" probability="0.05"/>
+		<flow id="f03" begin="0" end="10000" from="gneE2" to="-gneE4" probability="0.05"/>
+		<flow id="f04" begin="0" end="10000" from="-gneE5" to="-gneE2" probability="0.05"/>
+		<flow id="f05" begin="0" end="10000" from="-gneE3" to="-gneE2" probability="0.05"/>
+		<flow id="f06" begin="0" end="10000" from="gneE4" to="-gneE2" probability="0.05"/>
+	 </vehicles>
+	 -->
+	<vType accel="3.0" decel="5.0" id="Car" length="4.0" maxSpeed="100.0" sigma="0.0" />
+	
+	<route id="du" edges="gneE2 gneE3"/>
+	<route id="dl" edges="gneE2 gneE5"/>
+	<route id="dr" edges="gneE2 -gneE4"/>
+	<route id="ld" edges="-gneE5 -gneE2"/>
+	<route id="lr" edges="-gneE5 -gneE4"/>
+	<route id="lu" edges="-gneE5 gneE3"/>
+	<route id="ul" edges="-gneE3 gneE5"/>
+	<route id="ud" edges="-gneE3 -gneE2"/>
+	<route id="ur" edges="-gneE3 -gneE4"/>
+	<route id="ru" edges="gneE4 gneE3"/>
+	<route id="rl" edges="gneE4 gneE5"/>
+	<route id="rd" edges="gneE4 -gneE2"/>
+
+</routes>
