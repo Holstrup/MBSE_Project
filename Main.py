@@ -1,4 +1,5 @@
 import sys
+import os
 import ControlStrategy
 from TrafficGenerator import *
 import libraries.traci as traci
@@ -20,7 +21,7 @@ class Main:
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.001
+        self.vehicle_appearance_probability = 0.01
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:
@@ -35,13 +36,22 @@ class Main:
 
     def locate_sumo_installation(self):
         # replace with if-else statements to fit all users
-        try:
-            # Insert dir of sumo tools
-            self.sumoBinary = "C:/Users/Bosse/Documents/00_DTU/01_Master/01_First_Semester/02223_Model-Based_Systems_Engineering/sumo-1.3.1/bin/sumo-gui.exe"
-            self.config_path = "C:/Users/Bosse/Documents/00_DTU/01_Master/01_First_Semester/02223_Model-Based_Systems_Engineering/git/MBSE_Project/networks/test.sumocfg"
-        except ImportError:
-            sys.exit(
-                "please declare environment variable 'SUMO_HOME' as the root directory of your sumo installation (it should contain folders 'bin', 'tools' and 'docs')")
+        path_a = ""
+        path_b = "C:/Users/Bosse/Documents/00_DTU/01_Master/01_First_Semester/02223_Model-Based_Systems_Engineering/sumo-1.3.1/bin/sumo-gui.exe"
+        path_l = ""
+
+        if os.path.exists(path_a):
+            self.sumoBinary = path_a
+        elif os.path.exists(path_b):
+            self.sumoBinary = path_b
+        elif os.path.exists(path_l):
+            self.sumoBinary = path_l
+        else:
+            print("ERR: Could not find sumo gui")
+            sys.exit()
+
+        rel_config_path = "networks/test.sumocfg"
+        self.config_path = os.path.join(os.path.dirname(__file__), rel_config_path)
 
     def enable_log(self):
         self.sumo_cmd.append("--full-output")
@@ -75,6 +85,7 @@ class Main:
         for step in range(self.num_steps):
             traci.simulationStep()
             self.traffic_generator.generate_traffic_flow()
+
 
 # instantiate object
 main = Main()
