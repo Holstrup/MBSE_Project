@@ -21,7 +21,7 @@ class Main:
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.015
+        self.vehicle_appearance_probability = 0.03
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:

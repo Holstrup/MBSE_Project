@@ -91,8 +91,8 @@ def plot_lane_speed(x, y, z):
 
 
 
-edges = read_net_file("test01.net.xml")
-vehicledata, edge_data, max_timestep = read_from_file("../log-file.xml")
+#edges = read_net_file("test01.net.xml")
+
 
 def average_speed():
     speeds = []
@@ -128,6 +128,12 @@ def pollution(vehicle_data):
         total_fuel += sum(results)
     return total_fuel / len(vehicle_data.keys())
 
-print("No. Vehicles : " + str(len(vehicledata.keys())))
-print("Average speed: " + str(average_speed()))
-print("Efficiency   : " + str(efficiency(vehicledata, 300)))
+
+ControlLogic = ["Traffic Light", "Right Hand Precedence Control", "FIFO Control", "Grid Control"]
+Prob = ["0.01", "0.05", "0.1", "0.15", "0.2", "0.3"]
+for probability in Prob:
+    print("\nProbability: " + probability)
+    vehicledata, edge_data, max_timestep = read_from_file("Data/" + probability + "_" + ControlLogic[1] + ".xml")
+    print("No. Vehicles : " + str(len(vehicledata.keys())))
+    print("Average speed: " + str(average_speed()))
+    print("Efficiency   : " + str(efficiency(vehicledata, 600)))
