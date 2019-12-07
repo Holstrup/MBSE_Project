@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="73b88390-db70-41d7-afb4-ebff103d84ee" name="Default Changelist" comment="">
+    <list default="true" id="73b88390-db70-41d7-afb4-ebff103d84ee" name="Default Changelist" comment="1213">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataProcessing/DataProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataProcessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataProcessing/full_log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataProcessing/test01.net.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LaneDefinitions.py" beforeDir="false" afterPath="$PROJECT_DIR$/LaneDefinitions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SystemController.py" beforeDir="false" afterPath="$PROJECT_DIR$/SystemController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SystemControllerFuture.py" beforeDir="false" afterPath="$PROJECT_DIR$/SystemControllerFuture.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_config/hello.edg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_config/hello.net.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_config/hello.nod.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_config/hello.rou.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_config/hello.sumocfg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_inter_sumo_traci.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataProcessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SystemControllerFutureV2.py" beforeDir="false" afterPath="$PROJECT_DIR$/SystemControllerFutureV2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,17 +18,18 @@
     <SUITE FILE_PATH="coverage/MBSE_Project$LaneDefinitions.coverage" NAME="LaneDefinitions Coverage Results" MODIFIED="1573721254752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MBSE_Project$Test2.coverage" NAME="Test2 Coverage Results" MODIFIED="1573126745475" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Tests" />
     <SUITE FILE_PATH="coverage/MBSE_Project$DataProcessing.coverage" NAME="DataProcessing Coverage Results" MODIFIED="1574342628273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DataProcessing" />
-    <SUITE FILE_PATH="coverage/MBSE_Project$simple_inter_sumo_traci.coverage" NAME="simple_inter_sumo_traci Coverage Results" MODIFIED="1575715640214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MBSE_Project$simple_inter_sumo_traci.coverage" NAME="simple_inter_sumo_traci Coverage Results" MODIFIED="1575716456792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MBSE_Project$Test1.coverage" NAME="Test1 Coverage Results" MODIFIED="1573038223174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Tests" />
     <SUITE FILE_PATH="coverage/MBSE_Project$SystemControllerFuture.coverage" NAME="SystemControllerFuture Coverage Results" MODIFIED="1573648802455" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MBSE_Project$DataP.coverage" NAME="DataP Coverage Results" MODIFIED="1575716753205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="67" selection-start-line="67" selection-end-line="67" />
+            <state relative-caret-position="660">
+              <caret line="46" selection-start-line="46" selection-end-line="46" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -45,11 +37,35 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DataProcessing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="348">
+              <caret line="112" column="35" lean-forward="true" selection-end-line="132" selection-end-column="60" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DataP.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="181">
+              <caret line="122" column="17" selection-start-line="122" selection-start-column="17" selection-end-line="122" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SystemControllerFutureV2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="138" column="67" lean-forward="true" selection-start-line="138" selection-start-column="67" selection-end-line="138" selection-end-column="67" />
+            <state relative-caret-position="630">
+              <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -60,7 +76,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SystemControllerFuture.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="913">
+            <state relative-caret-position="1485">
               <caret line="104" selection-start-line="99" selection-start-column="8" selection-end-line="104" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -90,7 +106,6 @@
       <find>contro</find>
       <find>control</find>
       <find>getroute</find>
-      <find>print</find>
       <find>traci.vehicle.</find>
       <find>sm</find>
       <find>sim1</find>
@@ -110,6 +125,7 @@
       <find>intersection_available</find>
       <find>bitmap</find>
       <find>reserv</find>
+      <find>print</find>
     </findStrings>
     <replaceStrings>
       <replace>0.01</replace>
@@ -133,6 +149,11 @@
       </list>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Alex-branch" />
+      </map>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/DataProcessing.py" root0="SKIP_INSPECTION" />
@@ -162,8 +183,10 @@
         <option value="$PROJECT_DIR$/SystemController.py" />
         <option value="$PROJECT_DIR$/LaneDefinitions.py" />
         <option value="$PROJECT_DIR$/SystemControllerFuture.py" />
-        <option value="$PROJECT_DIR$/Main.py" />
         <option value="$PROJECT_DIR$/SystemControllerFutureV2.py" />
+        <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/DataProcessing.py" />
+        <option value="$PROJECT_DIR$/DataP.py" />
       </list>
     </option>
   </component>
@@ -177,7 +200,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -188,12 +210,18 @@
             <path>
               <item name="MBSE_Project" type="b2602c69:ProjectViewProjectNode" />
               <item name="MBSE_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="Data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MBSE_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MBSE_Project" type="462c0819:PsiDirectoryNode" />
               <item name="networks" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -228,7 +256,29 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.simple_inter_sumo_traci">
+  <component name="RunManager" selected="Python.DataP">
+    <configuration name="DataP" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="MBSE_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DataP.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="DataProcessing" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="MBSE_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -295,28 +345,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Test3" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="MBSE_Project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Tests/Test3/Test3.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="simple_inter_sumo_traci" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="MBSE_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -341,11 +369,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.simple_inter_sumo_traci" />
+        <item itemvalue="Python.DataP" />
         <item itemvalue="Python.DataProcessing" />
+        <item itemvalue="Python.simple_inter_sumo_traci" />
         <item itemvalue="Python.LaneDefinitions" />
         <item itemvalue="Python.SystemControllerFuture" />
-        <item itemvalue="Python.Test3" />
       </list>
     </recent_temporary>
   </component>
@@ -382,7 +410,8 @@
       <workItem from="1574348373958" duration="496000" />
       <workItem from="1574503034302" duration="6000" />
       <workItem from="1575621577189" duration="7433000" />
-      <workItem from="1575710474305" duration="4459000" />
+      <workItem from="1575710474305" duration="5373000" />
+      <workItem from="1575716628325" duration="577000" />
     </task>
     <task id="LOCAL-00001" summary="(Sorta) Implemented a simple FIFO control algorithm. Cars kinda crash&#10;sometimes but that will hopefully be fixed in next commit">
       <created>1572695282934</created>
@@ -419,26 +448,42 @@
       <option name="project" value="LOCAL" />
       <updated>1574249586117</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="1213">
+      <created>1575715744716</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1575715744716</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81514000" />
+    <option name="totallyTimeSpent" value="83005000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22031474" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22317597" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299363" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.29299363" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.42292994" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3299363" />
       <window_info anchor="bottom" id="Docker" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3299363" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
@@ -500,7 +545,8 @@
     <MESSAGE value="Added test cases" />
     <MESSAGE value="fifo works without collisions" />
     <MESSAGE value="Data file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Data file" />
+    <MESSAGE value="1213" />
+    <option name="LAST_COMMIT_MESSAGE" value="1213" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DataProcessing/test.py" />
@@ -590,16 +636,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DataProcessing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="119" selection-start-line="119" selection-end-line="119" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Control_Logic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
@@ -640,20 +676,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SystemControllerFuture.py">
+    <entry file="file://$PROJECT_DIR$/Data/log-file.xml">
+      <provider selected="true" editor-type-id="LargeFileEditor" />
+    </entry>
+    <entry file="file:///usr/local/Cellar/sumo/1.3.1/share/sumo/tools/traci/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="913">
-          <caret line="104" selection-start-line="99" selection-start-column="8" selection-end-line="104" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="65">
+          <caret line="205" selection-start-line="205" selection-end-line="205" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
+        <state relative-caret-position="660">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -662,10 +698,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SystemControllerFutureV2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="138" column="67" lean-forward="true" selection-start-line="138" selection-start-column="67" selection-end-line="138" selection-end-column="67" />
+        <state relative-caret-position="630">
+          <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SystemControllerFuture.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1485">
+          <caret line="104" selection-start-line="99" selection-start-column="8" selection-end-line="104" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="112" column="35" lean-forward="true" selection-end-line="132" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="122" column="17" selection-start-line="122" selection-start-column="17" selection-end-line="122" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>

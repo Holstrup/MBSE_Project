@@ -75,12 +75,11 @@ class SystemController:
         at index self.time_history.
         """
         self.space_time = np.delete(self.space_time, obj=0, axis=2)
-        self.space_time = np.dstack((self.space_time, np.ones((self.junction_size, self.junction_size))))
+        self.space_time = np.dstack((self.space_time, np.zeros((self.junction_size, self.junction_size))))
 
     def intersection_available(self, time_in, time_out, bitmap):
         time_in = math.floor(time_in)
         time_out = math.ceil(time_out)
-        print(bitmap)
 
         for i in range(time_in, time_out, 1):
             full_sum = np.add(bitmap, self.space_time[:, :, int(time_in + i)])
@@ -97,8 +96,6 @@ class SystemController:
         for new_time in range(time, self.time_history - self.time_through_intersection, 1):
             if self.intersection_available(new_time, new_time + self.time_through_intersection, bitmap):
                 return new_time, new_time + self.time_through_intersection
-
-        print("Lasse is an idiot")
 
     def reserveGrid(self, time_in_steps, car, path, step, car_lane):
         # Book time
@@ -130,7 +127,6 @@ class SystemController:
                     if car not in self.vehicle_reservations.keys():
                         bitmap = paths[car_route]
                         if not self.intersection_available(time_in,time_out,bitmap) or time_in < time_in_min:
-                            print(car)
                             time_in, time_out = self.findNextAvailability(time_in, time_in_min, bitmap)
 
                         self.reserveGrid(time_in*10,car,bitmap,step,car_lane)

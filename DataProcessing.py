@@ -91,8 +91,8 @@ def plot_lane_speed(x, y, z):
 
 
 
-edges = read_net_file("test01.net.xml")
-vehicledata, edge_data, max_timestep = read_from_file("../log-file.xml")
+#edges = read_net_file("test01.net.xml")
+vehicledata, edge_data, max_timestep = read_from_file("Data/log-file.xml")
 
 def average_speed():
     speeds = []

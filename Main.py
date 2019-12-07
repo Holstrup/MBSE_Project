@@ -26,7 +26,7 @@ except ImportError:
 sumoBinary = "/usr/local/Cellar/sumo/1.3.1/bin/" + run_config
 
 #Insert dir of config file
-sumoCmd = [sumoBinary, "-c", "networks/test.sumocfg", '--step-length', str(step_length), '--full-output', "log-file.xml", "--verbose"]
+sumoCmd = [sumoBinary, "-c", "networks/test.sumocfg", '--step-length', str(step_length), '--full-output', "Data/log-file.xml", "--verbose"]
 
 
 """ Main code """
