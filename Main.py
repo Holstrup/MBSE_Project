@@ -17,11 +17,11 @@ class Main:
         self.locate_sumo_installation()
         # configure simulation parameters
         self.num_steps = 100000
-        self.step_length = 0.01
+        self.step_length = 0.1
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.005
+        self.vehicle_appearance_probability = 0.001
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:
@@ -30,7 +30,7 @@ class Main:
         #   2: Traffic Light
         #   3: Grid
         #   4: None
-        self.select_cs(2)
+        self.select_cs(1)
         # init traffic generator
         self.traffic_generator = TrafficGenerator(self.vehicle_appearance_probability,
                                                   getattr(self.control_strategy, 'routes'))
@@ -82,11 +82,11 @@ class Main:
         elif not 100 <= self.num_steps <= 100000:
             print("ERR: Number of simulation steps is out of range [100, 100 000]. Exiting...")
             return False
-        elif not 0.1 <= self.vehicle_appearance_probability / self.step_length <= 2.0:
-            print("ERR: Traffic flow settings not supported. The vehicle appearance probability divided by the step"
-                  " length must be between 0.1 and 2.0. It is currently " + str(self.vehicle_appearance_probability /
-                                                                                self.step_length))
-            return False
+        #elif not 0.1 <= self.vehicle_appearance_probability / self.step_length <= 2.0:
+        #    print("ERR: Traffic flow settings not supported. The vehicle appearance probability divided by the step"
+        #          " length must be between 0.1 and 2.0. It is currently " + str(self.vehicle_appearance_probability /
+        #                                                                        self.step_length))
+        #    return False
         else:
             return True
 
