@@ -16,7 +16,7 @@ class Main:
         # fill paths with local sumo installation
         self.locate_sumo_installation()
         # configure simulation parameters
-        self.num_steps = 100000
+        self.num_steps = 6000
         self.step_length = 0.1
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
@@ -57,7 +57,7 @@ class Main:
 
     def enable_log(self):
         self.sumo_cmd.append("--full-output")
-        self.sumo_cmd.append("tmp_log.xml")
+        self.sumo_cmd.append("data/" + str(self.vehicle_appearance_probability*10) + "_" + self.control_strategy.get_name() + ".xml")
 
     def select_cs(self, idx):
         if idx == 0:
@@ -82,11 +82,11 @@ class Main:
         elif not 100 <= self.num_steps <= 100000:
             print("ERR: Number of simulation steps is out of range [100, 100 000]. Exiting...")
             return False
-        #elif not 0.1 <= self.vehicle_appearance_probability / self.step_length <= 2.0:
-        #    print("ERR: Traffic flow settings not supported. The vehicle appearance probability divided by the step"
-        #          " length must be between 0.1 and 2.0. It is currently " + str(self.vehicle_appearance_probability /
-        #                                                                        self.step_length))
-        #    return False
+        elif not 0.01 <= self.vehicle_appearance_probability / self.step_length <= 0.5:
+            print("ERR: Traffic flow settings not supported. The vehicle appearance probability divided by the step"
+                  " length must be between 0.1 and 2.0. It is currently " + str(self.vehicle_appearance_probability /
+                                                                                self.step_length))
+            return False
         else:
             return True
 
@@ -104,7 +104,7 @@ class Main:
 # instantiate object
 main = Main()
 # uncomment to get log file:
-# main.enable_log()
+main.enable_log()
 # run the simulation
 main.run()
 traci.close()

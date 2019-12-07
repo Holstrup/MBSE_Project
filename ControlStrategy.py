@@ -19,6 +19,9 @@ class ControlStrategy:
     def set_step_length(self, step_length):
         self.step_length = step_length
 
+    def get_name(self):
+        return self.name
+
 
 class FifoControl(ControlStrategy):
     def __init__(self):
