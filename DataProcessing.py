@@ -133,7 +133,8 @@ ControlLogic = ["Traffic Light", "Right Hand Precedence Control", "FIFO Control"
 Prob = ["0.01", "0.05", "0.1", "0.15", "0.2", "0.3"]
 for probability in Prob:
     print("\nProbability: " + probability)
-    vehicledata, edge_data, max_timestep = read_from_file("Data/" + probability + "_" + ControlLogic[1] + ".xml")
+    vehicledata, edge_data, max_timestep = read_from_file("Data/" + probability + "_" + ControlLogic[3] + ".xml")
     print("No. Vehicles : " + str(len(vehicledata.keys())))
+    print("Cars / Minute   : " + str(efficiency(vehicledata, 600)))
     print("Average speed: " + str(average_speed()))
-    print("Efficiency   : " + str(efficiency(vehicledata, 600)))
+    print("Pollution   : " + str(pollution(vehicledata)))
