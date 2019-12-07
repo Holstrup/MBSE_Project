@@ -16,12 +16,12 @@ class Main:
         # fill paths with local sumo installation
         self.locate_sumo_installation()
         # configure simulation parameters
-        self.num_steps = 10000
-        self.step_length = 0.1
+        self.num_steps = 100000
+        self.step_length = 0.01
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.01
+        self.vehicle_appearance_probability = 0.005
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:
@@ -29,6 +29,7 @@ class Main:
         #   1: Right Hand Precedence
         #   2: Traffic Light
         #   3: Grid
+        #   4: None
         self.select_cs(2)
         # init traffic generator
         self.traffic_generator = TrafficGenerator(self.vehicle_appearance_probability,
@@ -36,9 +37,10 @@ class Main:
 
     def locate_sumo_installation(self):
         # replace with if-else statements to fit all users
-        path_a = ""
-        path_b = "C:/Users/Bosse/Documents/00_DTU/01_Master/01_First_Semester/02223_Model-Based_Systems_Engineering/sumo-1.3.1/bin/sumo-gui.exe"
-        path_l = ""
+        path_a = "/usr/local/Cellar/sumo/1.3.1/bin/sumo-gui"
+        path_b = "C:/Users/Bosse/Documents/00_DTU/01_Master/01_First_Semester/02223_Model-Based_Systems_Engineering" \
+                 "/sumo-1.3.1/bin/sumo-gui.exe"
+        path_l = "/usr/local/Cellar/sumo/1.3.1/bin/sumo-gui"
 
         if os.path.exists(path_a):
             self.sumoBinary = path_a
@@ -64,8 +66,11 @@ class Main:
             self.control_strategy = ControlStrategy.RhpControl()
         elif idx == 2:
             self.control_strategy = ControlStrategy.TlControl()
+            self.control_strategy.set_step_length(self.step_length)
         elif idx == 3:
             self.control_strategy = ControlStrategy.GridControl()
+        elif idx == 4:
+            self.control_strategy = ControlStrategy.NoControl()
         else:
             print("ERR: Invalid control strategy index. Exiting...")
             sys.exit()
@@ -77,14 +82,23 @@ class Main:
         elif not 100 <= self.num_steps <= 100000:
             print("ERR: Number of simulation steps is out of range [100, 100 000]. Exiting...")
             return False
-        # Todo: add check for traffic density. Depends on step length and vehicle appearance probability. We should
-        #  establish a suitable range
+        elif not 0.1 <= self.vehicle_appearance_probability / self.step_length <= 2.0:
+            print("ERR: Traffic flow settings not supported. The vehicle appearance probability divided by the step"
+                  " length must be between 0.1 and 2.0. It is currently " + str(self.vehicle_appearance_probability /
+                                                                                self.step_length))
+            return False
+        else:
+            return True
 
     def run(self):
+        if not self.check_setup():
+            sys.exit()
+
         traci.start(self.sumo_cmd)
         for step in range(self.num_steps):
             traci.simulationStep()
             self.traffic_generator.generate_traffic_flow()
+            self.control_strategy.control(step)
 
 
 # instantiate object

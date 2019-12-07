@@ -1,7 +1,7 @@
 import random
 import math
 import libraries.traci as traci
-import libraries.sumolib as sumolib
+# import libraries.sumolib as sumolib
 
 
 class TrafficGenerator:
