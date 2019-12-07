@@ -38,14 +38,7 @@ for step in range(3000):
     sim1.simulationStep()
     generate_traffic()
 
-
     control.run_sim()
-
-
-
-
-
-
 
 traci.close()
 
