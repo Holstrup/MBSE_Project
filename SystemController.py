@@ -3,14 +3,11 @@ import traci
 import traci.constants as tc
 
 class SystemController:
-    def __init__(self, step_length, speedMode = 0):
+    def __init__(self, step_length):
 
         """ Hyper Parameters """
-        self.time_through_intersection = 20  # 20 steps = 2 seconds at step size 0.1
-        self.deceleration_parameter = 1  # 1 m/s
-        self.step_length = step_length
-        self.speedMode = speedMode
-        self.update_freq = 1 * (1 / step_length) # Every second
+        self.time_through_intersection = 40  # 20 steps = 2 seconds at step size 0.1
+        self.deceleration_parameter = 0  # 1 m/s
 
 
         """ System Variables """
@@ -38,7 +35,7 @@ class SystemController:
 
     def dist_from_junction(self, car, junction_pos=(0, 0)):
         vehicle_pos = traci.vehicle.getPosition(car)
-        return math.sqrt((vehicle_pos[0] - junction_pos[0]) ** 2 + (vehicle_pos[1] - junction_pos[1]) ** 2)
+        return math.sqrt((vehicle_pos[0] - junction_pos[0]) ** 2 + (vehicle_pos[1] - junction_pos[1]) ** 2) - 7.5
 
 
     def update_id_list(self):
@@ -55,8 +52,6 @@ class SystemController:
 
         for departed in traci.simulation.getDepartedIDList():
             self.vehicle_stack.append(departed)
-            print("Depart Speed", traci.vehicle.getSpeed(departed))
-            traci.vehicle.setSpeedMode(departed, self.speedMode)
 
 
     def schedule_arrival(self, car, step, time_in, time_out):
@@ -81,6 +76,7 @@ class SystemController:
                 # Find next available time for vehicle
                 target_time = max(self.reserved_slots) + 10
 
+
                 # Calculate average speed for it to get there on that specific time
                 target_speed = self.dist_from_junction(car) / (target_time - step) * 10
 
@@ -92,28 +88,32 @@ class SystemController:
                 self.vehicle_reservations[car] = reserved_times
                 self.reserved_slots.extend(reserved_times)
 
-        #print(self.reserved_slots)
-
 
     def update_state(self, step):
-        #print(self.vehicle_reservations)
-        if len(self.vehicle_stack) == 0:
+        self.update_id_list()
+
+        if len(self.vehicle_reservations) == 0:
             pass
 
-        # For all cars
-        for car in self.vehicle_stack:
-            # If the car is on it's way into the intersection
-            if traci.vehicle.getLaneID(car) in self.inc_lanes:
-                time = self.time_from_junction(car)
-                self.schedule_arrival(car, step, step + time * 10, step + time * 10 + self.time_through_intersection)
-            # If the car is on its way out of the intersection, set max speed.
-            elif traci.vehicle.getLaneID(car) in self.out_lanes:
-                laneId = traci.vehicle.getLaneID(car)
-                traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
-            # If the car is in the intrersection, set the speed to max speed
-            else:
-                laneId = traci.vehicle.getLaneID(car)
-                traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
+        if step % 5 == 0:
+            print(self.vehicle_reservations)
+
+            # For all cars
+            for car in self.vehicle_stack:
+                # If the car is on it's way into the intersection
+                if traci.vehicle.getLaneID(car) in self.inc_lanes:
+                    time = self.time_from_junction(car)
+                    self.schedule_arrival(car, step, step + time * 10, step + time * 10 + self.time_through_intersection)
+
+                # If the car is on its way out of the intersection, set max speed.
+                elif traci.vehicle.getLaneID(car) in self.out_lanes:
+                    laneId = traci.vehicle.getLaneID(car)
+                    traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
+
+                # If the car is in the intrersection, set the speed to max speed
+                else:
+                    laneId = traci.vehicle.getLaneID(car)
+                    traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
 
 
 
