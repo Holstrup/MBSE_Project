@@ -8,7 +8,7 @@ import math
 
 traci.start(config_traci.sumoCmd, label="sim1")
 sim1=traci.getConnection("sim1")
-control = ControlLogic2(sim1)
+control = ControlLogic2()
 
 LOW = 0.026
 HIGH = 0.042

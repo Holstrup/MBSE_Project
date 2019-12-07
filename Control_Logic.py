@@ -1,10 +1,9 @@
 import math
-
+import traci
 
 class ControlLogic2:
 
-    def __init__(self,trac):
-        self.traci=trac
+    def __init__(self):
         self.vehicle_dict={}
         self.right_turn_dict={}
         self.inc_lanes = [ "gneE2", "gneE4","-gneE3","-gneE5"]
@@ -24,13 +23,13 @@ class ControlLogic2:
             self.counter_dict[id]=0
 
             #Set vehicle speedmode to 7
-            self.traci.vehicle.setSpeedMode(id,7)
+            traci.vehicle.setSpeedMode(id,7)
 
     def update_vehicle_list(self):
         vehicles_to_delete=[]
         for vehicle_id in self.vehicle_dict.keys():
 
-            current_pos=self.traci.vehicle.getRoadID(vehicle_id)
+            current_pos=traci.vehicle.getRoadID(vehicle_id)
             if current_pos not in self.inc_lanes:
                 vehicles_to_delete.append(vehicle_id)
 
@@ -41,7 +40,7 @@ class ControlLogic2:
 
 
         for vehicle in vehicles_to_delete:
-            inc_pos=self.traci.vehicle.getRoute(vehicle)[0]
+            inc_pos=traci.vehicle.getRoute(vehicle)[0]
 
             del self.vehicle_dict[vehicle]
             self.watch_dict[inc_pos].remove(vehicle)
@@ -54,8 +53,8 @@ class ControlLogic2:
 
     #function to check if vehicle is turning right
     def turning_right(self,vehicle_id):
-        in_pos = self.traci.vehicle.getRoute(vehicle_id)[0]
-        out_pos = self.traci.vehicle.getRoute(vehicle_id)[1]
+        in_pos = traci.vehicle.getRoute(vehicle_id)[0]
+        out_pos = traci.vehicle.getRoute(vehicle_id)[1]
         if self.right_turns[in_pos]==out_pos:
                 return True
         else:
@@ -63,8 +62,8 @@ class ControlLogic2:
             return False
 
     def going_straight(self,vehicle_id):
-        in_pos = self.traci.vehicle.getRoute(vehicle_id)[0]
-        out_pos = self.traci.vehicle.getRoute(vehicle_id)[1]
+        in_pos = traci.vehicle.getRoute(vehicle_id)[0]
+        out_pos = traci.vehicle.getRoute(vehicle_id)[1]
         if self.straight_path[in_pos]==out_pos:
             return True
         else:
@@ -86,19 +85,19 @@ class ControlLogic2:
             return 3
 
     def dist_to_junction(self, vehicle_id):
-        vehicle_pos = self.traci.vehicle.getPosition(vehicle_id)
+        vehicle_pos = traci.vehicle.getPosition(vehicle_id)
         junction_pos = (0,0)
         return math.sqrt((vehicle_pos[0] - junction_pos[0]) ** 2 + (vehicle_pos[1] - junction_pos[1]) ** 2)
 
     def time_to_junction(self, vehicle_id):
 
         dist = self.dist_to_junction(vehicle_id)
-        speed = self.traci.vehicle.getSpeed(vehicle_id)
+        speed = traci.vehicle.getSpeed(vehicle_id)
         return dist / (speed + 0.0001)
 
     def dist_to_stop(self,vehicle_id):
-        speed=self.traci.vehicle.getSpeed(vehicle_id)
-        dec=self.traci.vehicle.getDecel(vehicle_id)
+        speed=traci.vehicle.getSpeed(vehicle_id)
+        dec=traci.vehicle.getDecel(vehicle_id)
         traveled_distance=speed**2/(2*dec)
         return traveled_distance
 
@@ -111,8 +110,8 @@ class ControlLogic2:
         return sorted(self.watch_dict.items(), key=lambda kv: kv[1])'''
 
     def is_to_the_right(self,vehicle1,vehicle2):
-        vehicle1_pos = self.traci.vehicle.getRoadID(vehicle1)
-        vehicle2_pos = self.traci.vehicle.getRoadID(vehicle2)
+        vehicle1_pos = traci.vehicle.getRoadID(vehicle1)
+        vehicle2_pos = traci.vehicle.getRoadID(vehicle2)
         index_vehicle1 = self.inc_lanes.index(vehicle1_pos)
         index_vehicle2=self.inc_lanes.index(vehicle2_pos)
         if index_vehicle1 + 1 == index_vehicle2 or (index_vehicle1 == 3 and index_vehicle2 == 0):
@@ -121,7 +120,7 @@ class ControlLogic2:
             return False
 
     def cars_to_the_right(self, vehicle):
-        vehicle_pos = self.traci.vehicle.getRoadID(vehicle)
+        vehicle_pos = traci.vehicle.getRoadID(vehicle)
         index_vehicle = self.inc_lanes.index(vehicle_pos)
 
         #find pos to the right
@@ -137,8 +136,8 @@ class ControlLogic2:
             return False
 
     def is_across(self,vehicle1,vehicle2):
-        vehicle1_pos = self.traci.vehicle.getRoadID(vehicle1)
-        vehicle2_pos = self.traci.vehicle.getRoadID(vehicle2)
+        vehicle1_pos = traci.vehicle.getRoadID(vehicle1)
+        vehicle2_pos = traci.vehicle.getRoadID(vehicle2)
 
         index_vehicle1 = self.inc_lanes.index(vehicle1_pos)
         index_vehicle2 = self.inc_lanes.index(vehicle2_pos)
@@ -150,8 +149,8 @@ class ControlLogic2:
             return False
 
     def is_to_the_left(self,vehicle1,vehicle2):
-        vehicle1_pos = self.traci.vehicle.getRoadID(vehicle1)
-        vehicle2_pos = self.traci.vehicle.getRoadID(vehicle2)
+        vehicle1_pos = traci.vehicle.getRoadID(vehicle1)
+        vehicle2_pos = traci.vehicle.getRoadID(vehicle2)
 
         index_vehicle1 = self.inc_lanes.index(vehicle1_pos)
         index_vehicle2 = self.inc_lanes.index(vehicle2_pos)
@@ -195,7 +194,7 @@ class ControlLogic2:
                 if veh1_dist>veh2_dist:
                     prioritized = False
         # if vehicle 2 is in the intersection
-        elif self.traci.vehicle.getRoadID(vehicle2) not in self.inc_lanes:
+        elif traci.vehicle.getRoadID(vehicle2) not in self.inc_lanes:
             prioritized = False
 
         return prioritized
@@ -217,9 +216,9 @@ class ControlLogic2:
 
         #from center of junction to end of road
         dist_from_center_to_end=7.5
-        current_pos=self.traci.vehicle.getRoadID(vehicle_id)
+        current_pos=traci.vehicle.getRoadID(vehicle_id)
 
-        self.traci.vehicle.setStop(vehicle_id,current_pos,100-dist_from_center_to_end)
+        traci.vehicle.setStop(vehicle_id,current_pos,100-dist_from_center_to_end)
         self.vehicle_dict[vehicle_id] = False
 
 
@@ -228,9 +227,9 @@ class ControlLogic2:
     def cancel_stop(self,vehicle_id):
         #from center of junction to end of road
 
-        current_pos=self.traci.vehicle.getRoadID(vehicle_id)
-        self.traci.vehicle.setSpeed(vehicle_id,-1)
-        #self.traci.vehicle.setStop(vehicle_id,current_pos,100-7.5,duration=0)
+        current_pos=traci.vehicle.getRoadID(vehicle_id)
+        traci.vehicle.setSpeed(vehicle_id,-1)
+        #traci.vehicle.setStop(vehicle_id,current_pos,100-7.5,duration=0)
         self.vehicle_dict[vehicle_id]=True
         self.counter_dict[vehicle_id]=0
 
@@ -247,11 +246,11 @@ class ControlLogic2:
 
     def run_sim(self):
 
-        if self.traci.vehicle.getIDCount() > 0:
+        if traci.vehicle.getIDCount() > 0:
 
             # if any vehicles have departed in the given simulated step, add to vehicle list
-            if self.traci.simulation.getDepartedNumber() > 0:
-                self.register_vehicle(self.traci.simulation.getDepartedIDList())
+            if traci.simulation.getDepartedNumber() > 0:
+                self.register_vehicle(traci.simulation.getDepartedIDList())
             # update lists
             self.update_vehicle_list()
 
@@ -274,7 +273,7 @@ class ControlLogic2:
 
 
                                 # both cars are stopped
-                                elif self.traci.vehicle.getStopState(vehicle) == 1 and self.traci.vehicle.getStopState(other) == 1:
+                                elif traci.vehicle.getStopState(vehicle) == 1 and traci.vehicle.getStopState(other) == 1:
 
                                     if self.counter_dict[vehicle] < self.counter_dict[other]:
                                         can_go = False
@@ -283,22 +282,22 @@ class ControlLogic2:
 
                                 self.stop_at_junction(vehicle)
                             # If car is stopping but can go
-                            elif self.vehicle_dict[vehicle] == False and can_go and self.traci.vehicle.getStopState(
+                            elif self.vehicle_dict[vehicle] == False and can_go and traci.vehicle.getStopState(
                                     vehicle) == 0:
 
                                 self.cancel_stop(vehicle)
 
                                 # control.remove_from_watch(road_id,vehicle)
-                            elif self.traci.vehicle.getStopState(vehicle) == 1 and can_go:
+                            elif traci.vehicle.getStopState(vehicle) == 1 and can_go:
 
-                                self.traci.vehicle.resume(vehicle)
+                                traci.vehicle.resume(vehicle)
                                 self.vehicle_dict[vehicle] = False
                         else:
-                            if self.traci.vehicle.getStopState(vehicle) == 0 and self.vehicle_dict[vehicle] == False:
+                            if traci.vehicle.getStopState(vehicle) == 0 and self.vehicle_dict[vehicle] == False:
                                 self.cancel_stop(vehicle)
 
-                            elif self.traci.vehicle.getStopState(vehicle) == 1:
+                            elif traci.vehicle.getStopState(vehicle) == 1:
 
-                                self.traci.vehicle.resume(vehicle)
+                                traci.vehicle.resume(vehicle)
                                 self.vehicle_dict[vehicle] = True
                                 self.counter_dict[vehicle] = 0
