@@ -21,7 +21,7 @@ class Main:
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.03
+        self.vehicle_appearance_probability = 0.04
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:
@@ -30,7 +30,7 @@ class Main:
         #   2: Traffic Light
         #   3: Grid
         #   4: None
-        self.select_cs(3)
+        self.select_cs(1)
         # init traffic generator
         self.traffic_generator = TrafficGenerator(self.vehicle_appearance_probability,
                                                   getattr(self.control_strategy, 'routes'))
