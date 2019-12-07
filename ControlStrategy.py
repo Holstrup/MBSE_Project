@@ -482,7 +482,7 @@ class TlControl(ControlStrategy):
                 edge = traci.vehicle.getRoadID(vehicle)
                 if edge in getattr(ControlStrategy, 'incoming_edges'):
                     distance = math.sqrt(x ** 2 + y ** 2)
-                    if 30.0 < distance < closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)][1]:
+                    if 40.0 < distance < closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)][1]:
                         closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)] = [vehicle, distance]
 
             if self.priority_ud == 0:
