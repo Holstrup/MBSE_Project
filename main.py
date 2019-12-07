@@ -21,7 +21,6 @@ routes = ['du', 'dl', 'dr', 'ld', 'lr', 'lu', 'ul', 'ud', 'ur', 'ru', 'rl', 'rd'
 def generate_traffic():
     global sm, current_id, routes, vehicle_appearance_probability
     if random.random() < vehicle_appearance_probability:
-        print(math.floor(random.random() * len(routes)))
         route_id = routes[math.floor(random.random() * len(routes))]
 
         vehicle_id = "00000" + str(current_id)
@@ -38,14 +37,9 @@ for step in range(3000):
 
     sim1.simulationStep()
     generate_traffic()
-    if sim1.vehicle.getIDCount()>0:
-
-        #if any vehicles have departed in the given simulated step, add to vehicle list
-        if sim1.simulation.getDepartedNumber() > 0:
-            control.register_vehicle(sim1.simulation.getDepartedIDList())
 
 
-        control.run_sim()
+    control.run_sim()
 
 
 
