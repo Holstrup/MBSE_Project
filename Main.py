@@ -21,7 +21,7 @@ class Main:
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.015
+        self.vehicle_appearance_probability = 0.03
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:
@@ -30,13 +30,12 @@ class Main:
         #   2: Traffic Light
         #   3: Grid
         #   4: None
-        self.select_cs(3)
+        self.select_cs(0)
         # init traffic generator
         self.traffic_generator = TrafficGenerator(self.vehicle_appearance_probability,
                                                   getattr(self.control_strategy, 'routes'))
 
     def locate_sumo_installation(self):
-        # replace with if-else statements to fit all users
         path_a = "/usr/local/Cellar/sumo/1.3.1/bin/sumo-gui"
         path_b = "C:/Users/Bosse/Documents/00_DTU/01_Master/01_First_Semester/02223_Model-Based_Systems_Engineering" \
                  "/sumo-1.3.1/bin/sumo-gui.exe"
@@ -104,7 +103,7 @@ class Main:
 # instantiate object
 main = Main()
 # uncomment to get log file:
-main.enable_log()
+# main.enable_log()
 # run the simulation
 main.run()
 traci.close()
