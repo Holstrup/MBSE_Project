@@ -7,27 +7,55 @@ def read_from_file(filename):
     tree = ET.parse(filename)
     root = tree.getroot()
     vehicles = {}
+    edges_data = {}
 
     for data in root:
+        timestep = data.attrib["timestep"]
         for element in data:
             if element.tag == "vehicles":
                 for instance in element:
                     id = instance.attrib["id"]
                     if id not in vehicles:
-                        vehicles[id] = {"speed": [], "x": [], "y":[]}
+                        vehicles[id] = {"speed": [], "x": [], "y":[], "fuel": []}
 
                     vehicles[id]["speed"].append(instance.attrib["speed"])
                     vehicles[id]["x"].append(instance.attrib["x"])
                     vehicles[id]["y"].append(instance.attrib["y"])
-    return vehicles
+                    vehicles[id]["fuel"].append(instance.attrib["fuel"])
+            elif element.tag == "edges":
+                for instance in element:
+                    for lane in instance:
+                        id = lane.attrib["id"]
+                        meanspeed = lane.attrib["meanspeed"]
+                        if id not in edges_data:
+                            edges_data[id] = {"timestep": [], "meanspeed": []}
+                        edges_data[id]["timestep"].append(timestep)
+                        edges_data[id]["meanspeed"].append(meanspeed)
 
 
-vehicledata = read_from_file("full_log")
+    return vehicles, edges_data, timestep
 
 
-x = vehicledata["f06.1"]["x"]
-y = vehicledata["f06.1"]["y"]
-z = vehicledata["f06.1"]["speed"]
+
+def read_net_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    edges = {}
+
+    for data in root:
+        if data.tag == "edge":
+            for lane in data:
+                id = lane.attrib["id"]
+                speed = lane.attrib["speed"]
+                shape = (lane.attrib["shape"]).split(" ")
+                x_coor, y_coor = [], []
+                for coordinate in shape:
+                    coordinate = coordinate.split(",")
+                    x_coor.append(float(coordinate[0]))
+                    y_coor.append(float(coordinate[1]))
+
+                edges[id] = {"speed": speed, "x": x_coor, "y": y_coor}
+    return edges
 
 
 
@@ -51,10 +79,61 @@ def plot_lane_speed(x, y, z):
     lc.set_array(z)
     lc.set_linewidth(2)
     line = axs.add_collection(lc)
-    fig.colorbar(line, ax=axs)
+    cbar = fig.colorbar(line, ax=axs)
+    cbar.ax.set_ylabel('Speed [m/s]', rotation=270)
+
 
     axs.set_xlim(-50, 50)
     axs.set_ylim(-50, 50)
+    plt.xlabel("X-direction")
+    plt.ylabel("Y-direction")
     plt.show()
 
-plot_lane_speed(x,y,z)
+
+
+#edges = read_net_file("test01.net.xml")
+
+
+def average_speed():
+    speeds = []
+    for vehicle in vehicledata.keys():
+        v_speed = vehicledata[vehicle]["speed"]
+        v_speed = list(map(float, v_speed))
+        speeds.append(sum(v_speed) / len(v_speed))
+    return (sum(speeds) / len(speeds)) * 3.6
+
+def plot_edge(edges, edge_data, timestep=0):
+    for edge_id in edges.keys():
+        x, y = edges[edge_id]["x"], edges[edge_id]["y"]
+        plt.plot(x, y, 'r-')
+    plt.show()
+
+
+# Safety Metric: (Cars involved in collisions) / (Total number of cars)
+def safety(collisions, total_cars):
+    return collisions / total_cars
+
+
+# Efficiency Metric: (Cars Through Intersection) / (Minute)
+def efficiency(vehicle_data, max_time):
+    return len(vehicle_data.keys()) / (float(max_time)) * 60
+
+
+# Greta Thunberg Metric: (Sum of car pollution) / (Number of cars)
+def pollution(vehicle_data):
+    total_fuel = 0
+    for vehicle in vehicle_data.keys():
+        fueldata = vehicle_data[vehicle]["fuel"]
+        results = map(float, fueldata)
+        total_fuel += sum(results)
+    return total_fuel / len(vehicle_data.keys())
+
+
+ControlLogic = ["Traffic Light", "Right Hand Precedence Control", "FIFO Control", "Grid Control"]
+Prob = ["0.01", "0.05", "0.1", "0.15", "0.2", "0.3"]
+for probability in Prob:
+    print("\nProbability: " + probability)
+    vehicledata, edge_data, max_timestep = read_from_file("Data/" + probability + "_" + ControlLogic[1] + ".xml")
+    print("No. Vehicles : " + str(len(vehicledata.keys())))
+    print("Average speed: " + str(average_speed()))
+    print("Efficiency   : " + str(efficiency(vehicledata, 600)))

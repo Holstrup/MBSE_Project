@@ -547,7 +547,7 @@ class GridControl(ControlStrategy):
         """ Hyper Parameters """
         self.time_through_intersection = 4  # Seconds
         self.deceleration_parameter = 0  # 1 m/s
-        self.time_history = 1200  # Seconds
+        self.time_history = 5000  # Seconds
         self.junction_size = 2  # Grid Size
 
         """ System Variables """
@@ -673,7 +673,7 @@ class GridControl(ControlStrategy):
                 try:
                     laneId = traci.vehicle.getLaneID(car)
                     traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
-                except traci.exceptions:
+                except Exception:
                     continue
 
 
