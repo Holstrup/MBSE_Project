@@ -554,7 +554,7 @@ class GridControl(ControlStrategy):
         self.id = 3
 
         """ Hyper Parameters """
-        self.time_through_intersection = 2  # Seconds
+        self.time_through_intersection = 0  # Seconds
         self.deceleration_parameter = 0  # 1 m/s
         self.time_history = 5000  # Seconds
         self.junction_size = 2  # Grid Size
