@@ -439,6 +439,7 @@ class TlControl(ControlStrategy):
         self.tl_period = 60
         self.priority_rl = 0
         self.priority_ud = 1
+        self.min_distance = 40
 
         self.switch = True
         self.time_until_switch = self.tl_period
@@ -451,16 +452,24 @@ class TlControl(ControlStrategy):
 
         # check if a vehicle was generated on a lane with a red light and without a leading vehicle
         active_vehicles = traci.vehicle.getIDList()
+
         if active_vehicles:
             vehicle_id = active_vehicles[len(active_vehicles) - 1]
             route_id = traci.vehicle.getRouteID(active_vehicles[len(active_vehicles) - 1])
             edge = self.route_edge_dict[route_id]
             if edge not in self.blocked_edges:
-                if self.priority_ud == 0 and edge in getattr(ControlStrategy, 'edges_ud'):
-                    traci.vehicle.setStop(vehicle_id, edge, pos=90, duration=self.time_until_switch)  # set stop for vehicle
+                x, y = traci.vehicle.getPosition(vehicle_id)
+                distance = math.sqrt(x ** 2 + y ** 2)
+
+                if self.priority_ud == 0 and edge in getattr(ControlStrategy, 'edges_ud') and traci.vehicle.getRoadID(
+                        vehicle_id) in getattr(ControlStrategy, 'incoming_edges') and self.min_distance < distance:
+                    traci.vehicle.setStop(vehicle_id, edge, pos=90,
+                                          duration=self.time_until_switch)  # set stop for vehicle
                     self.blocked_edges.append(edge)  # add edge to blocked edges
-                elif self.priority_rl == 0 and edge in getattr(ControlStrategy, 'edges_lr'):
-                    traci.vehicle.setStop(vehicle_id, edge, pos=90, duration=self.time_until_switch)  # set stop for vehicle
+                elif self.priority_rl == 0 and edge in getattr(ControlStrategy, 'edges_lr') and traci.vehicle.getRoadID(
+                        vehicle_id) in getattr(ControlStrategy, 'incoming_edges') and self.min_distance < distance:
+                    traci.vehicle.setStop(vehicle_id, edge, pos=90,
+                                          duration=self.time_until_switch)  # set stop for vehicle
                     self.blocked_edges.append(edge)  # add edge to blocked edges
 
         # detect traffic light switch
@@ -482,7 +491,7 @@ class TlControl(ControlStrategy):
                 edge = traci.vehicle.getRoadID(vehicle)
                 if edge in getattr(ControlStrategy, 'incoming_edges'):
                     distance = math.sqrt(x ** 2 + y ** 2)
-                    if 40.0 < distance < closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)][1]:
+                    if self.min_distance < distance < closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)][1]:
                         closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)] = [vehicle, distance]
 
             if self.priority_ud == 0:
@@ -679,8 +688,6 @@ class GridControl(ControlStrategy):
                     traci.vehicle.setSpeed(car, traci.lane.getMaxSpeed(laneId))
                 except Exception:
                     continue
-
-
 
 
 class NoControl(ControlStrategy):

@@ -4,7 +4,7 @@ import libraries.traci as traci
 
 
 class TrafficGenerator:
-    def __init__(self, vap=0.0, routes=[], tau=0.0, speed_mode=7, imperfection=0.0, min_gap=2.0):
+    def __init__(self, vap=0.0, routes=[], tau=0.1, speed_mode=7, imperfection=0.0, min_gap=2.0):
         self.current_id = 0
         self.routes = routes
 
@@ -26,4 +26,4 @@ class TrafficGenerator:
             traci.vehicle.setMinGap(vehicle_id, self.min_gap)
             traci.vehicle.setSpeedMode(vehicle_id, self.sm)
             traci.vehicle.setTau(vehicle_id, self.tau)
-            traci.vehicle.setImperfection(vehicle_id, self.imperfection)
+            #traci.vehicle.setImperfection(vehicle_id, self.imperfection)
