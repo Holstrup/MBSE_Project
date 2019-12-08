@@ -14,6 +14,7 @@ class TrafficGenerator:
         self.imperfection = imperfection
         self.min_gap = min_gap
         self.initial_speed = 13.8
+        random.seed(61)
 
     def generate_traffic_flow(self):
         # vehicle generator based on routes and probability
@@ -26,4 +27,4 @@ class TrafficGenerator:
             traci.vehicle.setMinGap(vehicle_id, self.min_gap)
             traci.vehicle.setSpeedMode(vehicle_id, self.sm)
             traci.vehicle.setTau(vehicle_id, self.tau)
-            #traci.vehicle.setImperfection(vehicle_id, self.imperfection)
+            traci.vehicle.setImperfection(vehicle_id, self.imperfection)

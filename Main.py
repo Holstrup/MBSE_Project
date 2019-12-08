@@ -30,7 +30,7 @@ class Main:
         #   2: Traffic Light
         #   3: Grid
         #   4: None
-        self.select_cs(2)
+        self.select_cs(3)
         # init traffic generator
         self.traffic_generator = TrafficGenerator(self.vehicle_appearance_probability,
                                                   getattr(self.control_strategy, 'routes'))
