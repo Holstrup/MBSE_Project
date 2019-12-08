@@ -27,7 +27,7 @@ class FifoControl(ControlStrategy):
     def __init__(self):
 
         """ Hyper Parameters """
-        self.time_through_intersection = 40  # 20 steps = 2 seconds at step size 0.1
+        self.time_through_intersection = 20  # 20 steps = 2 seconds at step size 0.1
         self.deceleration_parameter = 0  # 1 m/s
 
         """ System Variables """
@@ -669,6 +669,10 @@ class GridControl(ControlStrategy):
                         if not self.intersection_available(time_in, time_out, bitmap) or time_in < time_in_min:
                             time_in, time_out = self.findNextAvailability(time_in, time_in_min, bitmap)
 
+
+                        dist = self.dist_from_junction(car)
+                        velocity = dist / time_in
+                        traci.vehicle.setSpeed(car, velocity)
                         self.reserveGrid(time_in * 10, car, bitmap, step, car_lane)
 
 

@@ -91,6 +91,8 @@ def plot_lane_speed(x, y, z):
 
 
 
+
+
 #edges = read_net_file("test01.net.xml")
 
 
@@ -121,20 +123,71 @@ def efficiency(vehicle_data, max_time):
 
 # Greta Thunberg Metric: (Sum of car pollution) / (Number of cars)
 def pollution(vehicle_data):
-    total_fuel = 0
+    total_fuel_averages = []
     for vehicle in vehicle_data.keys():
         fueldata = vehicle_data[vehicle]["fuel"]
-        results = map(float, fueldata)
-        total_fuel += sum(results)
-    return total_fuel / len(vehicle_data.keys())
+        results = list(map(float, fueldata))
+        total_fuel_averages += [sum(results) / 10]
+    return sum(total_fuel_averages) / len(total_fuel_averages)
 
 
 ControlLogic = ["Traffic Light", "Right Hand Precedence Control", "FIFO Control", "Grid Control"]
-Prob = ["0.01", "0.05", "0.1", "0.15", "0.2", "0.3"]
+Prob = ["0.01", "0.05", "0.1", "0.15", "0.2", "0.3", "0.4"]
+
 for probability in Prob:
     print("\nProbability: " + probability)
-    vehicledata, edge_data, max_timestep = read_from_file("Data/" + probability + "_" + ControlLogic[3] + ".xml")
+    vehicledata, edge_data, max_timestep = read_from_file("Data/" + probability + "_" + ControlLogic[3] + "NEW.xml")
     print("No. Vehicles : " + str(len(vehicledata.keys())))
     print("Cars / Minute   : " + str(efficiency(vehicledata, 600)))
     print("Average speed: " + str(average_speed()))
     print("Pollution   : " + str(pollution(vehicledata)))
+
+
+
+def plot_speeds():
+    for i, vehicle in enumerate(vehicledata.keys()):
+        if i == 10: break
+        v_speed = vehicledata[vehicle]["speed"]
+        v_speed = list(map(float, v_speed))
+        past_pointer = 0
+        v_speed_sec = []
+        for j in range(10, len(v_speed), 10):
+            v_speed_sec.append(sum(v_speed[past_pointer:j]) / 10)
+            past_pointer = j
+
+        plt.scatter(range(0, len(v_speed_sec), 1), v_speed_sec)
+        x1, x2, y1, y2 = plt.axis()
+        plt.axis((x1, x2, 0, 20))
+        if i == 9:
+            print(v_speed_sec)
+            plt.show()
+
+def plot_acceleration():
+    for i, vehicle in enumerate(vehicledata.keys()):
+        if i == 10: break
+        v_speed = vehicledata[vehicle]["speed"]
+        v_speed = list(map(float, v_speed))
+        past_pointer = 0
+        v_speed_sec = []
+        for i in range(10, len(v_speed), 10):
+            v_speed_sec.append(sum(v_speed[past_pointer:i]) / 10)
+            past_pointer = i
+        v_acc_sec = []
+        for i in range(1, len(v_speed_sec), 1):
+            v_acc_sec.append(v_speed_sec[i] - v_speed_sec[i - 1])
+        plt.scatter(range(0, len(v_acc_sec), 1), v_acc_sec)
+        x1, x2, y1, y2 = plt.axis()
+        plt.axis((x1, x2, -5, 5))
+        plt.show()
+
+#plot_acceleration()
+#plot_speeds()
+
+"""
+for i, car in enumerate(vehicledata.keys()):
+    x = vehicledata[car]["x"]
+    y = vehicledata[car]["y"]
+    z = vehicledata[car]["speed"]
+    plot_lane_speed(x, y, z)
+    if i == 10: break
+"""
