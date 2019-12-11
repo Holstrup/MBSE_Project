@@ -13,8 +13,7 @@ class TrafficGenerator:
         self.sm = speed_mode
         self.imperfection = imperfection
         self.min_gap = min_gap
-        self.initial_speed = 13.8
-        random.seed(61)
+        self.initial_speed = 13.89
 
     def generate_traffic_flow(self):
         # vehicle generator based on routes and probability

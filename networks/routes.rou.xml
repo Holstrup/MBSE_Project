@@ -1,6 +1,6 @@
 <routes>
 
-	<vType accel="3.0" decel="5.0" id="Car" length="4.5" maxSpeed="100.0" sigma="0.0" />
+	<vType accel="3.0" decel="5.0" id="Car" length="4.5" maxSpeed="200.0" sigma="0.0" />
 	
 	<route id="du" edges="gneE2 gneE3"/>
 	<route id="dl" edges="gneE2 gneE5"/>

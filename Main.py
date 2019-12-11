@@ -21,7 +21,7 @@ class Main:
         # set sumo command
         self.sumo_cmd = [self.sumoBinary, "-c", self.config_path, "--step-length", str(self.step_length), "--verbose"]
         # configure traffic density
-        self.vehicle_appearance_probability = 0.04
+        self.vehicle_appearance_probability = 0.03
         # init control strategy
         self.control_strategy = None
         # choose control strategy by ID:
@@ -30,7 +30,7 @@ class Main:
         #   2: Traffic Light
         #   3: Grid
         #   4: None
-        self.select_cs(4)
+        self.select_cs(3)
         # init traffic generator
         self.traffic_generator = TrafficGenerator(self.vehicle_appearance_probability,
                                                   getattr(self.control_strategy, 'routes'))
@@ -97,13 +97,14 @@ class Main:
         for step in range(self.num_steps):
             traci.simulationStep()
             self.traffic_generator.generate_traffic_flow()
+
             self.control_strategy.control(step)
 
 
 # instantiate object
 main = Main()
 # uncomment to get log file:
-main.enable_log()
+# main.enable_log()
 # run the simulation
 main.run()
 traci.close()

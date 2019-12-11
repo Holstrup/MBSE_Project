@@ -491,7 +491,8 @@ class TlControl(ControlStrategy):
                 edge = traci.vehicle.getRoadID(vehicle)
                 if edge in getattr(ControlStrategy, 'incoming_edges'):
                     distance = math.sqrt(x ** 2 + y ** 2)
-                    if self.min_distance < distance < closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)][1]:
+                    if self.min_distance < distance < \
+                            closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)][1]:
                         closest_vehicles[getattr(ControlStrategy, 'incoming_edges').index(edge)] = [vehicle, distance]
 
             if self.priority_ud == 0:
@@ -668,7 +669,6 @@ class GridControl(ControlStrategy):
                         bitmap = paths[car_route]
                         if not self.intersection_available(time_in, time_out, bitmap) or time_in < time_in_min:
                             time_in, time_out = self.findNextAvailability(time_in, time_in_min, bitmap)
-
 
                         dist = self.dist_from_junction(car)
                         velocity = dist / time_in
